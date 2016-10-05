@@ -1,0 +1,10 @@
+.jumbotron{
+	background: #AEB6BF;
+}
+input
+{
+  -moz-border-radius: 5px;
+ border-radius: 5px;
+    border:solid 1px black; 
+    padding:5px;
+}
