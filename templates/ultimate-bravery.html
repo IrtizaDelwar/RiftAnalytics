@@ -9,6 +9,7 @@
    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
    <link type="text/css" rel="stylesheet" href="{{ url_for('static',filename='stylesheet.css') }}"/>
    <title>Rift Analytics</title>
+
    <script>
   function newDoc()
   {
@@ -39,15 +40,17 @@
         <li><a href="#"><span class="glyphicon glyphicon-road"></span> Rankings </a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <button class="button" onclick="newDoc()"><span class="glyphicon glyphicon-search"></span> </button> <input name="searchTxt" type="text" maxlength="512" id="searchTxt" class="searchField"/></li>
+        <button class="button" onclick="newDoc()"><span class="glyphicon glyphicon-search"></span> </button> <input name="searchTxt" type="text" maxlength="512" id="searchTxt" placeholder="Name.." class="searchField"/></li>
       </ul>
     </div>
   </div>
 </nav>
 
-<br><br><br><br>
-<div class="panel panel-danger">
-  <div class="panel-heading">Cannot Find Username</div>
-  <div class="panel-body">Hi, {{ name }} . We are not connected to the riot API yet, so we don't have anything to show you.</div>
-</div>
+<div class="jumbotron">
+  <div class="container text-center">
+    <h1>Ultimate Bravery</h1><br>
+    <p> Are you brave enough for the challenge? Can you do it?</p>
+    <a href="#" class="btn btn-lg btn-danger"><span class="glyphicon glyphicon-fire"></span> Take the Challenge</a>
+  </div>
+
 </html>

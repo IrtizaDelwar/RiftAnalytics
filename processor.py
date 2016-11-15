@@ -10,5 +10,9 @@ def index():
 def profile(username):
 	return render_template("profile.html", name=username)
 
+@app.route('/ultimate-bravery')
+def ultimate_bravery():
+	return render_template("ultimate-bravery.html")
+
 if __name__ == "__main__":
 	app.run(debug=True)
