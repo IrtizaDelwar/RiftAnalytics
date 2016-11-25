@@ -45,5 +45,25 @@ def item_info():
 	itemInfo.append(picDict.get('full'))
 	return jsonify({'info' : itemInfo})
 
+@app.route('/sspell_info', methods=['POST'])
+def sspell_info():
+	spell_id = request.form['id']
+	spell_id2 = request.form['id2']
+	URL = "https://global.api.pvp.net/api/lol/static-data/na/v1.2/summoner-spell/" + spell_id + "?spellData=image&api_key=" + apiKey
+	URL2 = "https://global.api.pvp.net/api/lol/static-data/na/v1.2/summoner-spell/" + spell_id2 + "?spellData=image&api_key=" + apiKey
+	spellInfoResponse = requests.get(URL)
+	spellInfoResponse2 = requests.get(URL2)
+	spellInfoResponse = spellInfoResponse.json()
+	spellInfoResponse2 = spellInfoResponse2.json()
+	spellInfo = []
+	spellInfo2 = []
+	spellInfo.append(str(spellInfoResponse.get('name')))
+	spellInfo2.append(str(spellInfoResponse2.get('name')))
+	picDict = spellInfoResponse.get('image')
+	picDict2 = spellInfoResponse2.get('image')
+	spellInfo.append(picDict.get('full'))
+	spellInfo2.append(picDict2.get('full'))
+	return jsonify({'info' : spellInfo, 'info2' : spellInfo2})
+
 if __name__ == "__main__":
 	app.run(debug=True)
