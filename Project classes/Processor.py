@@ -61,3 +61,13 @@ class Processor:
 		champInfo.append(picDict.get('full'))
 		return champInfo
 		
+	def getItemInfo(self, itemID):
+		URL = "https://global.api.pvp.net/api/lol/static-data/na/v1.2/item/" + str(itemID) + "?itemData=image&api_key=" + self.apiKey
+		itemInfoResponse = requests.get(URL)
+		itemInfoResponse = itemInfoResponse.json()
+		itemInfo = []
+		itemInfo.append(str(itemInfoResponse.get('name')))
+		picDict = itemInfoResponse.get('image')
+		itemInfo.append(picDict.get('full'))
+		return itemInfo
+		

@@ -13,3 +13,7 @@ Processors = Processor()
 #Tests to see if getting champion info works
 #champSearch = Processors.getChampionInfo("103")
 #print (champSearch)
+
+#Tests to see if getting item info works
+itemSearch = Processors.getItemInfo(3085)
+print (itemSearch)
