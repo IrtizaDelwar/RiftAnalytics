@@ -8,6 +8,7 @@
    <meta name="viewport" content="width=device-width, initial-scale=1">
    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
    <link type="text/css" rel="stylesheet" href="{{ url_for('static',filename='stylesheet.css') }}"/>
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
    <title>Rift Analytics</title>
 
    <script>
@@ -18,6 +19,45 @@
   }
 </script>
 
+<script>
+function rotation(){
+  $.ajax({
+      type: "POST",
+      url: "/champion_rotation",
+      success : function(response){
+        for(i = 0; i < response.info.length; i++){
+          $.ajax({
+      type: "POST",
+      url: "/champion_info",
+      data: {'id' : response.info[i]},
+      success : function(data){
+        var a = document.createElement("a");
+        var x = document.createElement("IMG");
+        //x.setAttribute("onclick", "http://google.com");
+        x.setAttribute("src", "http://ddragon.leagueoflegends.com/cdn/6.23.1/img/champion/" + data.info[2]);
+        x.setAttribute("width", "60");
+        x.setAttribute("height", "60");
+        a.appendChild(x);
+        //a.setAttribute("href", "javascript:changeImage(\'' + data.info[0] +'\')");
+        a.addEventListener('click', function(){changeImage(data.info[0]);});
+        document.getElementById("pics").appendChild(a);
+        //document.body.appendChild(a);
+      }
+    })
+        }
+      }
+    })
+}
+</script>
+
+<script>
+function changeImage(champ){
+  if (document.body){
+    string = "http://ddragon.leagueoflegends.com/cdn/img/champion/splash/" + champ + "_0.jpg";
+    document.body.background = string;
+  }
+}
+</script>
 
 </head>
 
@@ -45,11 +85,17 @@
     </div>
   </div>
 </nav>
+<br><br><br><br>
 
-<div class="jumbotron">
-  <div class="container text-center">
-    <h1>Search User</h1><br>
-    <span class="glyphicon glyphicon-search"></span><input type="text" name="search" class="round" placeholder="Search..">
+<body>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-3" id ="pics"><h3>Free Champion Rotation</h3></div>
+      <div class="col-md-9"></div>
+    </div>
   </div>
+  <h1 id="free"></h1>
+<script>rotation();</script>
+</body>
 
 </html>

@@ -17,6 +17,10 @@ def profile(username):
 def ultimate_bravery():
 	return render_template("ultimate-bravery.html")
 
+@app.route('/free-champion-rotation')
+def free_champion_rotation():
+	return render_template("free-champion-rotation.html")
+
 @app.route('/champion_info', methods=['POST'])
 def champion_info():
 	#print('Hello world!', file=sys.stderr)
@@ -64,6 +68,40 @@ def sspell_info():
 	spellInfo.append(picDict.get('full'))
 	spellInfo2.append(picDict2.get('full'))
 	return jsonify({'info' : spellInfo, 'info2' : spellInfo2})
+
+@app.route('/champion_rotation', methods=['POST'])
+def champion_rotation():
+	URL = "https://na.api.pvp.net/api/lol/na/v1.2/champion?freeToPlay=true&api_key=" + apiKey
+	freeChampionResponse = requests.get(URL)
+	freeChampionResponse = freeChampionResponse.json()
+	freeChampIDs = freeChampionResponse.get('champions')
+	champIDs = []
+	for x in range(len(freeChampIDs)):
+		currentDict = freeChampIDs[x]
+		currentChampID = str(currentDict.get('id'))
+	#	ChampURL = "https://global.api.pvp.net/api/lol/static-data/na/v1.2/champion/" + currentChampID + "?api_key=" + apiKey
+	#	champInfo = requests.get(ChampURL)
+	#	champInfo = champInfo.json()
+	#	champName = str(champInfo.get('name'))
+		champIDs.append(currentChampID)
+	return jsonify({ 'info' : champIDs})
+
+#@app.route('/free_champion_rotation', methods=['POST'])
+#def free_champions():
+#	URL = "https://na.api.pvp.net/api/lol/na/v1.2/champion?freeToPlay=true&api_key=" + apiKey
+#	freeChampionResponse = requests.get(URL)
+#	freeChampionResponse = freeChampionResponse.json()
+#	freeChampIDs = freeChampionResponse.get('champions')
+#	champIDs = []
+#	for x in range(len(freeChampIDs)):
+#		currentDict = freeChampIDs[x]
+#		currentChampID = str(currentDict.get('id'))
+		#ChampURL = "https://global.api.pvp.net/api/lol/static-data/na/v1.2/champion/" + currentChampID + "?api_key=" + apiKey
+		#champInfo = requests.get(ChampURL)
+		#champInfo = champInfo.json()
+		#champName = str(champInfo.get('name'))
+#		champIDs.append(currentChampID)
+#	return jsonify({'info' : champIDs})
 
 if __name__ == "__main__":
 	app.run(debug=True)
