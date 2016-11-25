@@ -8,6 +8,7 @@
    <meta name="viewport" content="width=device-width, initial-scale=1">
    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
    <link type="text/css" rel="stylesheet" href="{{ url_for('static',filename='stylesheet.css') }}"/>
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
    <title>Rift Analytics</title>
 
    <script>
@@ -16,7 +17,91 @@
     var user = document.getElementById("searchTxt").value;
     window.location.assign("/profile/" + user)
   }
-</script>
+  </script>
+
+  <script>
+  function generator()
+  {
+    var championID = ['266', '103', '84', '12', '32', '34', '1', '22', '136', '268', '432', '53', '63', '201', '51', '69', '31', '42', '122', '131', '119', '36', '245', '60', '28', '81', '9', '114', '105', '3', '41', '86', '150', '79', '104', '120', '74', '420', '39', '427', '40', '59', '24', '126', '202', '222', '429', '43', '30', '38', '55', '10', '85', '121', '203', '240', '96', '7', '64', '89', '127', '236', '117', '99', '54', '90', '57', '11', '21', '62', '82', '25', '267', '75', '111', '76', '56', '20', '2', '61', '80', '78', '133', '33', '421', '58', '107', '92', '68', '13', '113', '35', '98', '102', '27', '14', '15', '72', '37', '16', '50', '134', '223', '163', '91', '44', '17', '412', '18', '48', '23', '4', '29', '77', '6', '110', '67', '45', '161', '254', '112', '8', '106', '19', '101', '5', '157', '83', '154', '238', '115', '26', '143']
+
+    var bootID = ['3006', '3009', '3020', '3047', '3111', '3117', '3158']
+
+    var itemID = ['3082', '3640', '3089', '3087', '3086', '3085', '3084', '3083', '2303', '2302', '3512', '2301', '3630', '3751', '3631', '3632', '3633', '3634', '3635', '3636', '3637', '3092', '3091', '3090', '3098', '3097', '3096', '3094', '3649', '3401', '3641', '3642', '3643', '3645', '3647', '3648', '3671', '3672', '3673', '1011', '1006', '1004', '3303', '3302', '3301', '1001', '3200', '1018', '3675', '1033', '3211', '1031', '1029', '1028', '1027', '1026', '3101', '3222', '1043', '3100', '1042', '2010', '3341', '3462', '1041', '3340', '3461', '3460', '2009', '1039', '1038', '1037', '1036', '2003', '1055', '3112', '1054', '3111', '1053', '3110', '1052', '1051', '2140', '3109', '3902', '3108', '3903', '2139', '3107', '2138', '3348', '3105', '2015', '3104', '3345', '3102', '3901', '3123', '2033', '3001', '3122', '3364', '2032', '3363', '2031', '3362', '3361', '3117', '3116', '1058', '3115', '3599', '1057', '3114', '1056', '3113', '2045', '3134', '3133', '3010', '3252', '3009', '3008', '3007', '3006', '3004', '3003', '3124', '3800', '3801', '3802', '3024', '3145', '2055', '3144', '2054', '3022', '3143', '2053', '3142', '2052', '3020', '1083', '2051', '3140', '1082', '2050', '3814', '3139', '2049', '3137', '2047', '3136', '3135', '3812', '3035', '3156', '3034', '3155', '3033', '3153', '3031', '3152', '3030', '3151', '1402', '3706', '1401', '3029', '1400', '3028', '3027', '3026', '3147', '3025', '3146', '1409', '1408', '3046', '3044', '3165', '3043', '3285', '3042', '3041', '3040', '3715', '1414', '1413', '1412', '1410', '3158', '3036', '3157', '1419', '3711', '1418', '1416', '3170', '3057', '3056', '3053', '3174', '3052', '3050', '3048', '3047', '3060', '3181', '3068', '3067', '3187', '3065', '3185', '3184', '3071', '3070', '3191', '3190', '3078', '3077', '3198', '3197', '3075', '3196', '3074', '3073', '3072', '3748', '3504', '3069', '3742', '3508']
+
+    var champion = championID[Math.floor(Math.random() * championID.length)];
+    $.ajax({
+      type: "POST",
+      url: "/champion_info",
+      data: {'id' : champion},
+      success : function(response){
+        document.getElementById("generated-champion-image").innerHTML = "<img src =http://ddragon.leagueoflegends.com/cdn/6.23.1/img/champion/" + response.info[2] + ">";
+        document.getElementById("generated-champion").innerHTML = response.info[0];
+        document.getElementById("generated-champion-description").innerHTML = response.info[1];
+      }
+    })
+
+    var boot = bootID[Math.floor(Math.random() * bootID.length)];
+    $.ajax({
+      type: "POST",
+      url: "/item_info",
+      data: {'id' : boot},
+      success : function(response){
+        document.getElementById("generated-boot").innerHTML = "<img src =http://ddragon.leagueoflegends.com/cdn/6.23.1/img/item/" + response.info[1] + "> <p>" + response.info[0] + "</p>";
+      }
+    })
+
+    var item1 = itemID[Math.floor(Math.random() * itemID.length)];
+    $.ajax({
+      type: "POST",
+      url: "/item_info",
+      data: {'id' : item1},
+      success : function(response){
+        document.getElementById("generated-item1").innerHTML = "<img src =http://ddragon.leagueoflegends.com/cdn/6.23.1/img/item/" + response.info[1] + "> <p>" + response.info[0] + "</p>";
+      }
+    })
+
+    var item2 = itemID[Math.floor(Math.random() * itemID.length)];
+    $.ajax({
+      type: "POST",
+      url: "/item_info",
+      data: {'id' : item2},
+      success : function(response){
+        document.getElementById("generated-item2").innerHTML = "<img src =http://ddragon.leagueoflegends.com/cdn/6.23.1/img/item/" + response.info[1] + "> <p>" + response.info[0] + "</p>";
+      }
+    })
+
+    var item3 = itemID[Math.floor(Math.random() * itemID.length)];
+    $.ajax({
+      type: "POST",
+      url: "/item_info",
+      data: {'id' : item3},
+      success : function(response){
+        document.getElementById("generated-item3").innerHTML = "<img src =http://ddragon.leagueoflegends.com/cdn/6.23.1/img/item/" + response.info[1] + "> <p>" + response.info[0] + "</p>";
+      }
+    })
+
+    var item4 = itemID[Math.floor(Math.random() * itemID.length)];
+    $.ajax({
+      type: "POST",
+      url: "/item_info",
+      data: {'id' : item4},
+      success : function(response){
+        document.getElementById("generated-item4").innerHTML = "<img src =http://ddragon.leagueoflegends.com/cdn/6.23.1/img/item/" + response.info[1] + "> <p>" + response.info[0] + "</p>";
+      }
+    })
+
+    var item5 = itemID[Math.floor(Math.random() * itemID.length)];
+    $.ajax({
+      type: "POST",
+      url: "/item_info",
+      data: {'id' : item5},
+      success : function(response){
+        document.getElementById("generated-item5").innerHTML = "<img src =http://ddragon.leagueoflegends.com/cdn/6.23.1/img/item/" + response.info[1] + "> <p>" + response.info[0] + "</p>";
+      }
+    })
+
+  }
+  </script>
 
 
 </head>
@@ -50,7 +135,22 @@
   <div class="container text-center">
     <h1>Ultimate Bravery</h1><br>
     <p> Are you brave enough for the challenge? Can you do it?</p>
-    <a href="#" class="btn btn-lg btn-danger"><span class="glyphicon glyphicon-fire"></span> Take the Challenge</a>
+    <button class="btn btn-lg btn-danger" onclick="generator()"><span class="glyphicon glyphicon-fire"></span> Take the Challenge</button>
   </div>
-
+</div>
+<div class="container">
+  <div class="row">
+    <div class="col-md-3">
+  <p id ="generated-champion-image"></p>
+  <h1 id ="generated-champion"></h1>
+  <p id ="generated-champion-description"></p><br>
+  </div>
+    <div class="col-md-1" id ="generated-boot"></div>
+    <div class="col-md-1" id ="generated-item1"></div>
+    <div class="col-md-1" id ="generated-item2"></div>
+    <div class="col-md-1" id ="generated-item3"></div>
+    <div class="col-md-1" id ="generated-item4"></div>
+    <div class="col-md-1" id ="generated-item5"></div>
+  </div>
+</div>
 </html>
