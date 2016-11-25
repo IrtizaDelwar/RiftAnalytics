@@ -50,3 +50,14 @@ class Processor:
 			champIDs.append(champName)
 		return champIDs
 		
+	def getChampionInfo(self, champID):
+		URL = "https://global.api.pvp.net/api/lol/static-data/na/v1.2/champion/" + champID + "?champData=image&api_key=" + self.apiKey
+		champInfoResponse = requests.get(URL)
+		champInfoResponse = champInfoResponse.json()
+		champInfo = []
+		champInfo.append(str(champInfoResponse.get('name')))
+		champInfo.append(str(champInfoResponse.get('title')))
+		picDict = champInfoResponse.get('image')
+		champInfo.append(picDict.get('full'))
+		return champInfo
+		
