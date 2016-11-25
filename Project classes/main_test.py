@@ -3,7 +3,7 @@ import requests
 
 Processors = Processor()
 #Test to see if search user works
-#results = Processors.searchUser("pvman", "kr")
+#results = Processors.searchUser("M3llakka", "na")
 #print (results)
 
 #Test to see if free champions work
@@ -15,5 +15,11 @@ Processors = Processor()
 #print (champSearch)
 
 #Tests to see if getting item info works
-itemSearch = Processors.getItemInfo(3085)
-print (itemSearch)
+#itemSearch = Processors.getItemInfo(3085)
+#print (itemSearch)
+
+#Tests champion mastery
+#masteryResult = Processors.getChampionMastery()
+#theValue = masteryResult.get("Ekko")
+#print(masteryResult)
+#print(theValue)

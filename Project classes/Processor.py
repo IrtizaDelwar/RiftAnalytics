@@ -2,6 +2,7 @@ import requests
 import User
 import Item
 import Champion
+from collections import defaultdict
 #import Player
 #import Match
 
@@ -9,6 +10,7 @@ class Processor:
 	#apiKey = "RGAPI-fb1301bf-3c9e-4c02-8d6e-a00257350d0c"
 	def __init__(self):
 		self.apiKey = "RGAPI-fb1301bf-3c9e-4c02-8d6e-a00257350d0c"
+		self.userID = ""
 
 	def searchUser(self, username, region):
 		userInfo = []
@@ -20,6 +22,7 @@ class Processor:
 		summonerID = summonerIDs.get('id')
 		summonerLevel = summonerIDs.get('summonerLevel')
 		userInfo.append(str(summonerLevel))
+		self.userID = str(summonerID)
 		URLRANK  = "https://" + region + ".api.pvp.net/api/lol/" + region + "/v2.5/league/by-summoner/" + str(summonerID) + "/entry?api_key=" + self.apiKey
 		rankResponse = requests.get(URLRANK)
 		rankResponse = rankResponse.json()
@@ -70,4 +73,42 @@ class Processor:
 		picDict = itemInfoResponse.get('image')
 		itemInfo.append(picDict.get('full'))
 		return itemInfo
+		
+	def getChampionMastery(self):
+		masteryDict = defaultdict(list)
+		if self.userID is not "":
+			URL = "https://na.api.pvp.net/championmastery/location/NA1/player/" + "35701656" + "/champions?api_key=" + self.apiKey
+			masteryResponse = requests.get(URL)
+			masteryResponse = masteryResponse.json()
+			champIdList = []
+			champLevelList = []
+			champPointList = []
+			champNameList = []
+			#print(type(masteryResponse))
+			for x in range (len(masteryResponse)):
+				curChampDict = masteryResponse[x]
+				champName =  str(curChampDict.get('championId'))
+				if curChampDict.get('championLevel') < 5:
+					break
+				URLCHAMP = "https://global.api.pvp.net/api/lol/static-data/na/v1.2/champion/" + champName + "?api_key=" + self.apiKey
+				championInfoResponse = requests.get(URLCHAMP)
+				championInfoDict = championInfoResponse.json()
+				champNameList.append(str(championInfoDict.get('name')))
+				champLevelList.append(str(curChampDict.get('championLevel')))
+				champPointList.append(str(curChampDict.get('championPoints')))
+				#print(champNameList[x] + " " + champLevelList[x] + " " + champPointList[x])
+			masteryDict = defaultdict(list)
+			if len(champNameList) is 0:
+				print("User has not achieved level 5 or higher mastery on any champions")
+				return masteryDict
+			else:
+				for y in range (len(champPointList)):
+					masteryDict[champNameList[y]].append(champLevelList[y])
+					masteryDict[champNameList[y]].append(champPointList[y])
+				return masteryDict
+			
+		else:
+			print("Search for a user first")
+			return masteryDict
+			
 		
