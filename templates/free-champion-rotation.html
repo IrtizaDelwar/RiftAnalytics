@@ -7,6 +7,7 @@
   <meta charset="utf-8">
    <meta name="viewport" content="width=device-width, initial-scale=1">
    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+   <link href="https://fonts.googleapis.com/css?family=Alegreya+SC" rel="stylesheet">
    <link type="text/css" rel="stylesheet" href="{{ url_for('static',filename='stylesheet.css') }}"/>
    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
    <title>Rift Analytics</title>
@@ -15,7 +16,9 @@
   function newDoc()
   {
     var user = document.getElementById("searchTxt").value;
-    window.location.assign("/profile/" + user)
+    var e = document.getElementById("region");
+    var region = e.options[e.selectedIndex].text;
+    window.location.assign("/profile/" +  region + "/" + user)
   }
 </script>
 
@@ -31,6 +34,9 @@ function rotation(){
       url: "/champion_info",
       data: {'id' : response.info[i]},
       success : function(data){
+        if (i == 0){
+          changeImage(data.info);
+        }
         var a = document.createElement("a");
         var x = document.createElement("IMG");
         //x.setAttribute("onclick", "http://google.com");
@@ -39,7 +45,7 @@ function rotation(){
         x.setAttribute("height", "60");
         a.appendChild(x);
         //a.setAttribute("href", "javascript:changeImage(\'' + data.info[0] +'\')");
-        a.addEventListener('click', function(){changeImage(data.info[0]);});
+        a.addEventListener('click', function(){changeImage(data.info);});
         document.getElementById("pics").appendChild(a);
         //document.body.appendChild(a);
       }
@@ -53,8 +59,10 @@ function rotation(){
 <script>
 function changeImage(champ){
   if (document.body){
-    string = "http://ddragon.leagueoflegends.com/cdn/img/champion/splash/" + champ + "_0.jpg";
+    string = "http://ddragon.leagueoflegends.com/cdn/img/champion/splash/" + champ[0] + "_0.jpg";
     document.body.background = string;
+    document.getElementById("name").innerHTML = champ[0];
+    document.getElementById("desc").innerHTML = champ[1];
   }
 }
 </script>
@@ -69,7 +77,7 @@ function changeImage(champ){
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="#">Rift Analytics</a>
+      <a class="navbar-brand" href="/">Rift Analytics</a>
     </div>
     <div class="collapse navbar-collapse" id="myNavbar">
       <ul class="nav navbar-nav">
@@ -80,21 +88,33 @@ function changeImage(champ){
         <li><a href="#"><span class="glyphicon glyphicon-road"></span> Rankings </a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <button class="button" onclick="newDoc()"><span class="glyphicon glyphicon-search"></span> </button> <input name="searchTxt" type="text" maxlength="512" id="searchTxt" placeholder="Name.." class="searchField"/></li>
+        <button class="button" onclick="newDoc()"><span class="glyphicon glyphicon-search"></span> </button> <input name="searchTxt" type="text" maxlength="512" id="searchTxt" placeholder="Name.." class="searchField"/> <select id="region">
+        <option>NA</option>
+        <option>EUW</option>
+        <option>EUNE</option>
+        <option>KR</option>
+        </select></li>
       </ul>
     </div>
   </div>
-</nav>
+</nav><select id="region">
+        <option>NA</option>
+        <option>EUW</option>
+        <option>EUNE</option>
+        <option>KR</option>
+        </select>
 <br><br><br><br>
 
 <body>
   <div class="container">
+    <div class="fcr">
     <div class="row">
       <div class="col-md-3" id ="pics"><h3>Free Champion Rotation</h3></div>
-      <div class="col-md-9"></div>
+      <div class="col-md-6"><br><br><br><br><br><br><br><br><br><br><br><br><br><h1 id="name"></h1><h2 id="desc"></h2></div>
+      <div class="col-md-3"></div>
     </div>
   </div>
-  <h1 id="free"></h1>
+  </div>
 <script>rotation();</script>
 </body>
 

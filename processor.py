@@ -9,9 +9,31 @@ apiKey = "RGAPI-fb1301bf-3c9e-4c02-8d6e-a00257350d0c"
 def index():
 	return render_template("index.html")
 
-@app.route('/profile/<username>')
-def profile(username):
-	return render_template("profile.html", name=username)
+@app.route('/profile/<region>/<username>')
+def profile(region, username):
+	userInfo = []
+	URL = "https://" + region + ".api.pvp.net/api/lol/" + region + "/v1.4/summoner/by-name/" + username + "?api_key=" + apiKey
+	userInfo.append(username)
+	searchResponse = requests.get(URL)
+	searchResponse = searchResponse.json()
+	summonerIDs = searchResponse.get(username.lower())
+	summonerID = summonerIDs.get('id')
+	summonerLevel = summonerIDs.get('summonerLevel')
+	userInfo.append(str(summonerLevel))
+	#self.userID = str(summonerID)
+	URLRANK  = "https://" + region + ".api.pvp.net/api/lol/" + region + "/v2.5/league/by-summoner/" + str(summonerID) + "/entry?api_key=" + apiKey
+	rankResponse = requests.get(URLRANK)
+	rankResponse = rankResponse.json()
+	rankData = rankResponse.get(str(summonerID))
+	soloRankData = rankData[0]
+	soloRankTier = soloRankData.get('tier')
+	soloRankDivision = soloRankData.get('entries')
+	soloRankDivision = soloRankDivision[0]
+	soloRankDivision = soloRankDivision.get('division')
+	soloRankStats = str(soloRankTier) + " " + str(soloRankDivision)
+	userInfo.append(soloRankStats)
+		#return summonerIDs
+	return render_template("profile.html", name=username, stats=userInfo)
 
 @app.route('/ultimate-bravery')
 def ultimate_bravery():
@@ -79,29 +101,8 @@ def champion_rotation():
 	for x in range(len(freeChampIDs)):
 		currentDict = freeChampIDs[x]
 		currentChampID = str(currentDict.get('id'))
-	#	ChampURL = "https://global.api.pvp.net/api/lol/static-data/na/v1.2/champion/" + currentChampID + "?api_key=" + apiKey
-	#	champInfo = requests.get(ChampURL)
-	#	champInfo = champInfo.json()
-	#	champName = str(champInfo.get('name'))
 		champIDs.append(currentChampID)
 	return jsonify({ 'info' : champIDs})
-
-#@app.route('/free_champion_rotation', methods=['POST'])
-#def free_champions():
-#	URL = "https://na.api.pvp.net/api/lol/na/v1.2/champion?freeToPlay=true&api_key=" + apiKey
-#	freeChampionResponse = requests.get(URL)
-#	freeChampionResponse = freeChampionResponse.json()
-#	freeChampIDs = freeChampionResponse.get('champions')
-#	champIDs = []
-#	for x in range(len(freeChampIDs)):
-#		currentDict = freeChampIDs[x]
-#		currentChampID = str(currentDict.get('id'))
-		#ChampURL = "https://global.api.pvp.net/api/lol/static-data/na/v1.2/champion/" + currentChampID + "?api_key=" + apiKey
-		#champInfo = requests.get(ChampURL)
-		#champInfo = champInfo.json()
-		#champName = str(champInfo.get('name'))
-#		champIDs.append(currentChampID)
-#	return jsonify({'info' : champIDs})
 
 if __name__ == "__main__":
 	app.run(debug=True)

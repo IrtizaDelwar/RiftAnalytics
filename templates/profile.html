@@ -7,13 +7,15 @@
   <meta charset="utf-8">
    <meta name="viewport" content="width=device-width, initial-scale=1">
    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-   <link type="text/css" rel="stylesheet" href="{{ url_for('static',filename='stylesheet.css') }}"/>
+   <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='stylesheet.css') }}"/>
    <title>Rift Analytics</title>
    <script>
   function newDoc()
   {
     var user = document.getElementById("searchTxt").value;
-    window.location.assign("/profile/" + user)
+    var e = document.getElementById("region");
+    var region = e.options[e.selectedIndex].text;
+    window.location.assign("/profile/" +  region + "/" + user)
   }
 </script>
 
@@ -28,7 +30,7 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="#">Rift Analytics</a>
+      <a class="navbar-brand" href="/">Rift Analytics</a>
     </div>
     <div class="collapse navbar-collapse" id="myNavbar">
       <ul class="nav navbar-nav">
@@ -39,7 +41,12 @@
         <li><a href="#"><span class="glyphicon glyphicon-road"></span> Rankings </a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <button class="button" onclick="newDoc()"><span class="glyphicon glyphicon-search"></span> </button> <input name="searchTxt" type="text" maxlength="512" id="searchTxt" class="searchField"/></li>
+        <button class="button" onclick="newDoc()"><span class="glyphicon glyphicon-search"></span> </button> <input name="searchTxt" type="text" maxlength="512" id="searchTxt" class="searchField"/> <select id="region">
+        <option>NA</option>
+        <option>EUW</option>
+        <option>EUNE</option>
+        <option>KR</option>
+        </select></li>
       </ul>
     </div>
   </div>
@@ -53,12 +60,15 @@
   <li><a href="#">Champion Statistics</a></li>
   <li><a href="#">Match History</a></li>
 </ul>
+<body>
 
-<div class="panel panel-danger">
-  <div class="panel-heading">Cannot Find Username</div>
-  <div class="panel-body">Hi, {{ name }} . We are not connected to the riot API yet, so we don't have anything to show you.</div>
-</div>
+  <div class="profile">
+    <h3> {{ stats[0] }} </h3>
+    <p> Level: {{stats[1]}}</p>
+    <p> Rank: {{ stats[2] }} </p>
+  </div>
 
+</body>
 <!-- <div class="panel panel-default">
   <div class="panel-heading">{{ name }}</div>
   <div class="panel-body">Rank: Gold V</div>

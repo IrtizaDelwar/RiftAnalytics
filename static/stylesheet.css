@@ -22,3 +22,25 @@ input
 .panel{
     margin: 15px;
 }
+
+body, html {
+    height: 100%;
+    width: 100%;
+}
+.profile{
+    color: gold;
+    font-family: 'Alegreya SC', serif;
+    height: 50%;
+    width: 100%;
+    background-image: url("http://ddragon.leagueoflegends.com/cdn/img/champion/splash/Zyra_0.jpg");
+    text-align: center;
+}
+.fcr{
+    color: #DAA520;
+    text-shadow: 2px 2px #000000;
+    font-family: 'Alegreya SC', serif;
+}
+
+.ub{
+    font-family: 'Bungee', cursive;
+}
