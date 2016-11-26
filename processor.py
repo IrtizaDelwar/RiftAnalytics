@@ -17,6 +17,8 @@ def profile(region, username):
 	searchResponse = requests.get(URL)
 	searchResponse = searchResponse.json()
 	summonerIDs = searchResponse.get(username.lower())
+	iconID = str(summonerIDs.get('profileIconId'))
+	URLICON = "http://ddragon.leagueoflegends.com/cdn/6.22.1/img/profileicon/"  + iconID + ".png"
 	summonerID = summonerIDs.get('id')
 	summonerLevel = summonerIDs.get('summonerLevel')
 	userInfo.append(str(summonerLevel))
@@ -29,9 +31,16 @@ def profile(region, username):
 	soloRankTier = soloRankData.get('tier')
 	soloRankDivision = soloRankData.get('entries')
 	soloRankDivision = soloRankDivision[0]
-	soloRankDivision = soloRankDivision.get('division')
-	soloRankStats = str(soloRankTier) + " " + str(soloRankDivision)
+	soloRankDivisions = soloRankDivision.get('division')
+	wins = soloRankDivision.get('wins')
+	losses = soloRankDivision.get('losses')
+	ratio = wins/losses
+	lp = soloRankDivision.get('leaguePoints')
+	soloRankStats = str(soloRankTier) + " " + str(soloRankDivisions)
 	userInfo.append(soloRankStats)
+	userInfo.append(URLICON)
+	userInfo.append(str(ratio))
+	userInfo.append(str(lp))
 		#return summonerIDs
 	return render_template("profile.html", name=username, stats=userInfo)
 
