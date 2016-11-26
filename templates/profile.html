@@ -7,6 +7,7 @@
   <meta charset="utf-8">
    <meta name="viewport" content="width=device-width, initial-scale=1">
    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+   <link href="https://fonts.googleapis.com/css?family=Alegreya+SC" rel="stylesheet">
    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='stylesheet.css') }}"/>
    <title>Rift Analytics</title>
    <script>
@@ -41,7 +42,7 @@
         <li><a href="#"><span class="glyphicon glyphicon-road"></span> Rankings </a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <button class="button" onclick="newDoc()"><span class="glyphicon glyphicon-search"></span> </button> <input name="searchTxt" type="text" maxlength="512" id="searchTxt" class="searchField"/> <select id="region">
+        <button class="button" onclick="newDoc()"><span class="glyphicon glyphicon-search"></span> </button> <input name="searchTxt" type="text" maxlength="12" id="searchTxt" class="searchField"/> <select id="region">
         <option>NA</option>
         <option>EUW</option>
         <option>EUNE</option>
@@ -63,9 +64,25 @@
 <body>
 
   <div class="profile">
-    <h3> {{ stats[0] }} </h3>
-    <p> Level: {{stats[1]}}</p>
-    <p> Rank: {{ stats[2] }} </p>
+    <div class="container">
+      <div class="profileTop">
+    <div class="col-md-1"></div>
+    <img style="position:relative; top:50px; right:500px; width:100px; height:100px" src={{ stats[6] }}>
+    <!--<img src= {{ stats[6] }} height="100" width="100">-->
+    <h3 style="position:relative; bottom:50px; right:300px;"> {{ stats[0] }} </h3> <p style="position:relative; bottom:50px; right:300px;">Level: {{stats[1]}}</p>
+    </div>
+    <div class="row">
+    <div class="col-md-6">
+      <img src= "{{ url_for('static',filename='images/platinum.png') }}">
+    <p> Rank: {{ stats[4] }}</p> <p>{{ stats[8] }} LP</p></div>
+    <div class="col-md-1">
+    <div style="border-left:1px solid #DAA520;height:250px"></div></div>
+    <div class="col-md-4">
+    <p> Wins: {{ stats[2] }}  Losses: {{ stats[3] }} </p>
+    <p> Win Ratio: {{ stats[7] }} </p> </div>
+      </div>
+    </div>
+
   </div>
 
 </body>

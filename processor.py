@@ -34,10 +34,14 @@ def profile(region, username):
 	soloRankDivisions = soloRankDivision.get('division')
 	wins = soloRankDivision.get('wins')
 	losses = soloRankDivision.get('losses')
-	ratio = wins/losses
+	userInfo.append(str(wins))
+	userInfo.append(str(losses))
+	ratio = "{0:.2f}%".format(wins/(wins+losses) * 100)
 	lp = soloRankDivision.get('leaguePoints')
 	soloRankStats = str(soloRankTier) + " " + str(soloRankDivisions)
 	userInfo.append(soloRankStats)
+	soloRankImage = "{{ url_for('static',filename='images/" + str(soloRankTier) + ".png') }}"
+	userInfo.append(soloRankImage)
 	userInfo.append(URLICON)
 	userInfo.append(str(ratio))
 	userInfo.append(str(lp))
