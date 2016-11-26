@@ -9,6 +9,8 @@
    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
    <link href="https://fonts.googleapis.com/css?family=Alegreya+SC" rel="stylesheet">
    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='stylesheet.css') }}"/>
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
    <title>Rift Analytics</title>
    <script>
   function newDoc()
@@ -20,6 +22,14 @@
   }
 </script>
 
+<script>
+$(document).ready(function() {
+    $("#click-me-div").click(function() {
+        alert('yes, the click actually happened');
+        $('.nav-tabs a[href="#samosas"]').tab('show');
+    });
+});
+</script>
 
 </head>
 
@@ -54,21 +64,116 @@
 </nav>
 <br><br><br><br>
 
+ <ul class="nav nav-tabs">
+    <li class="active"><a href="#profile" data-toggle="tab">Profile</a></li>
+    <li><a href="#mastery" data-toggle="tab">Mastery</a></li>
+    <li><a href="#stats" data-toggle="tab">Champion Statistics</a></li>
+    <li><a href="#history" data-toggle="tab">Match History</a></li>
+
+</ul>
+
+<div class="tab-content">
+
+    <div class="tab-pane active" id="profile">
+      <div class="profile">
+        <div class="container">
+          <div class="profileTop">
+            <div class="col-md-1"></div>
+            <img style="position:relative; top:50px; right:500px; width:100px; height:100px" src={{ stats[6] }}>
+            <h3 style="position:relative; bottom:50px; right:300px;"> {{ stats[0] }} </h3> <p style="position:relative; bottom:50px; right:300px;">Level: {{stats[1]}}</p>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+            <img src= "{{ url_for('static',filename='images/platinum.png') }}">
+            <p> Rank: {{ stats[4] }}</p> <p>{{ stats[8] }} LP</p></div>
+            <div class="col-md-1">
+              <div style="border-left:1px solid #DAA520;height:250px"></div></div>
+            <div class="col-md-4">
+              <p> Wins: {{ stats[2] }}  Losses: {{ stats[3] }} </p>
+              <p> Win Ratio: {{ stats[7] }} </p> </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tab-pane" id="mastery">
+      <div class="mastery-info">
+        <br>
+        <h1> Mastery Report Card </h1>
+        <h2> Profile </h2>
+        <h3> {{ stats[0] }} </h3>
+        <h4>Total Mastery Score: {{ mastery[0] }} </h4>
+      <h2>Top 5 Champions</h2>
+      <div class="col-lg-1"></div>
+      <div class="col-lg-2"> 
+         <p id ="image"></p>
+        <script>
+          var temp = '{{ mastery[1][1] }}';
+          document.getElementById("image").innerHTML = "<img src =http://ddragon.leagueoflegends.com/cdn/6.23.1/img/champion/" + temp + " height='50' width='50'>";
+        </script> 
+        <p> {{ mastery[1][0] }} </p>
+        <p> Level : <span style="color:white">{{ mastery[1][2] }}</span> </p>
+        <p> Points: <span style="color:white">{{ mastery[1][3] }}</span> </p>
+      </div>
+      <div class="col-lg-2"> 
+        <p id ="image2"></p>
+        <script>
+          var temp = '{{ mastery[2][1] }}';
+          document.getElementById("image2").innerHTML = "<img src =http://ddragon.leagueoflegends.com/cdn/6.23.1/img/champion/" + temp + " height='50' width='50'>";
+        </script> 
+        <p> {{ mastery[2][0] }} </p>
+        <p> Level : <span style="color:white">{{ mastery[2][2] }}</span> </p>
+        <p> Points: <span style="color:white">{{ mastery[2][3] }}</span> </p>
+      </div>
+      <div class="col-lg-2"> 
+        <p id ="image3"></p>
+        <script>
+          var temp = '{{ mastery[3][1] }}';
+          document.getElementById("image3").innerHTML = "<img src =http://ddragon.leagueoflegends.com/cdn/6.23.1/img/champion/" + temp + " height='50' width='50'>";
+        </script> 
+        <p> {{ mastery[3][0] }} </p>
+        <p> Level : <span style="color:white">{{ mastery[3][2] }}</span> </p>
+        <p> Points: <span style="color:white">{{ mastery[3][3] }}</span> </p>
+      </div>
+      <div class="col-lg-2"> 
+        <p id ="image4"></p>
+        <script>
+          var temp = '{{ mastery[4][1] }}';
+          document.getElementById("image4").innerHTML = "<img src =http://ddragon.leagueoflegends.com/cdn/6.23.1/img/champion/" + temp + " height='50' width='50'>";
+        </script> 
+        <p> {{ mastery[4][0] }} </p>
+        <p> Level : <span style="color:white">{{ mastery[4][2] }}</span> </p>
+        <p> Points: <span style="color:white">{{ mastery[4][3] }}</span> </p>
+      </div>
+      <div class="col-lg-2"> 
+        <p id ="image5"></p>
+        <script>
+          var temp = '{{ mastery[5][1] }}';
+          document.getElementById("image5").innerHTML = "<img src =http://ddragon.leagueoflegends.com/cdn/6.23.1/img/champion/" + temp + " height='50' width='50'>";
+        </script> 
+        <p> {{ mastery[5][0] }} </p>
+        <p> Level : <span style="color:white">{{ mastery[5][2] }}</span> </p>
+        <p> Points: <span style="color:white">{{ mastery[5][3] }}</span> </p>
+      </div>
+     </div></div>
+    <div class="tab-pane" id="stats">Nothing to see here</div>
+    <div class="tab-pane" id="history">Nothing to see here</div>
+</div>
+
+
 <!-- Centered Tabs -->
-<ul class="nav nav-tabs nav-justified">
+<!--<ul class="nav nav-tabs nav-justified">
   <li class="active"><a href="#">Profile</a></li>
   <li><a href="#">Mastery</a></li>
   <li><a href="#">Champion Statistics</a></li>
   <li><a href="#">Match History</a></li>
 </ul>
 <body>
-
   <div class="profile">
     <div class="container">
       <div class="profileTop">
     <div class="col-md-1"></div>
     <img style="position:relative; top:50px; right:500px; width:100px; height:100px" src={{ stats[6] }}>
-    <!--<img src= {{ stats[6] }} height="100" width="100">-->
     <h3 style="position:relative; bottom:50px; right:300px;"> {{ stats[0] }} </h3> <p style="position:relative; bottom:50px; right:300px;">Level: {{stats[1]}}</p>
     </div>
     <div class="row">
@@ -85,7 +190,7 @@
 
   </div>
 
-</body>
+</body> -->
 <!-- <div class="panel panel-default">
   <div class="panel-heading">{{ name }}</div>
   <div class="panel-body">Rank: Gold V</div>

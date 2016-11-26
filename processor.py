@@ -45,8 +45,29 @@ def profile(region, username):
 	userInfo.append(URLICON)
 	userInfo.append(str(ratio))
 	userInfo.append(str(lp))
+	URLMASTERY = "https://na.api.pvp.net/championmastery/location/NA1/player/" + str(summonerID) + "/topchampions?count=5&api_key=" + apiKey
+	masteryResponse = requests.get(URLMASTERY)
+	masteryResponse = masteryResponse.json()
+	URLSCORE = "https://na.api.pvp.net/championmastery/location/NA1/player/" + str(summonerID) + "/score?api_key=" + apiKey
+	masteryScoreResponse = requests.get(URLSCORE)
+	masteryScoreResponse = masteryScoreResponse.json()
+	masteryInfo = []
+	masteryInfo.append(str(masteryScoreResponse))
+	for x in range(len(masteryResponse)):
+		subInfo = []
+		champID = str(masteryResponse[x].get('championId'))
+		URLCHAMP = "https://global.api.pvp.net/api/lol/static-data/na/v1.2/champion/" + champID + "?champData=image&api_key=" + apiKey
+		champResponse = requests.get(URLCHAMP)
+		champResponse = champResponse.json()
+		subInfo.append(str(champResponse.get('name')))
+		picDict = champResponse.get('image')
+		subInfo.append(picDict.get('full'))
+		subInfo.append(str(masteryResponse[x].get('championLevel')))
+		subInfo.append(str(masteryResponse[x].get('championPoints')))
+		masteryInfo.append(subInfo)
+
 		#return summonerIDs
-	return render_template("profile.html", name=username, stats=userInfo)
+	return render_template("profile.html", name=username, stats=userInfo, mastery=masteryInfo)
 
 @app.route('/ultimate-bravery')
 def ultimate_bravery():
