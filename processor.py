@@ -12,12 +12,12 @@ def index():
 @app.route('/profile/<region>/<username>')
 def profile(region, username):
 	userInfo = []
+	masteryInfo = []
 	URL = "https://" + region + ".api.pvp.net/api/lol/" + region + "/v1.4/summoner/by-name/" + username + "?api_key=" + apiKey
 	userInfo.append(username)
 	searchResponse = requests.get(URL)
 	if (searchResponse.status_code != 200):
-			print("Invalid username or region.")
-			return
+			return render_template("profile.html", name=username, stats=userInfo, mastery=masteryInfo)
 	searchResponse = searchResponse.json()
 	summonerIDs = searchResponse.get(username.lower())
 	iconID = str(summonerIDs.get('profileIconId'))
@@ -30,7 +30,7 @@ def profile(region, username):
 		userInfo.append("0")
 		userInfo.append("0")
 		userInfo.append("No Games")
-		return userInfo
+		return render_template("profile.html", name=username, stats=userInfo, mastery=masteryInfo)
 	#self.userID = str(summonerID)
 	URLRANK  = "https://" + region + ".api.pvp.net/api/lol/" + region + "/v2.5/league/by-summoner/" + str(summonerID) + "/entry?api_key=" + apiKey
 	rankResponse = requests.get(URLRANK)
@@ -60,7 +60,6 @@ def profile(region, username):
 	URLSCORE = "https://na.api.pvp.net/championmastery/location/NA1/player/" + str(summonerID) + "/score?api_key=" + apiKey
 	masteryScoreResponse = requests.get(URLSCORE)
 	masteryScoreResponse = masteryScoreResponse.json()
-	masteryInfo = []
 	masteryInfo.append(str(masteryScoreResponse))
 	for x in range(len(masteryResponse)):
 		subInfo = []
