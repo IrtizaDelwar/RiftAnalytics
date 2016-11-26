@@ -54,3 +54,7 @@ body, html {
 .ub{
     font-family: 'Bungee', cursive;
 }
+
+.col-md-1 p{
+    font-size: 10px;
+}
