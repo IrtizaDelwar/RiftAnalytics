@@ -15,6 +15,9 @@ def profile(region, username):
 	URL = "https://" + region + ".api.pvp.net/api/lol/" + region + "/v1.4/summoner/by-name/" + username + "?api_key=" + apiKey
 	userInfo.append(username)
 	searchResponse = requests.get(URL)
+	if (searchResponse.status_code != 200):
+			print("Invalid username or region.")
+			return
 	searchResponse = searchResponse.json()
 	summonerIDs = searchResponse.get(username.lower())
 	iconID = str(summonerIDs.get('profileIconId'))
@@ -22,6 +25,12 @@ def profile(region, username):
 	summonerID = summonerIDs.get('id')
 	summonerLevel = summonerIDs.get('summonerLevel')
 	userInfo.append(str(summonerLevel))
+	if (summonerLevel != 30):
+		userInfo.append("not ranked")
+		userInfo.append("0")
+		userInfo.append("0")
+		userInfo.append("No Games")
+		return userInfo
 	#self.userID = str(summonerID)
 	URLRANK  = "https://" + region + ".api.pvp.net/api/lol/" + region + "/v2.5/league/by-summoner/" + str(summonerID) + "/entry?api_key=" + apiKey
 	rankResponse = requests.get(URLRANK)
