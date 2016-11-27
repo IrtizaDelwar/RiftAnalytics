@@ -14,13 +14,14 @@ def index():
 def profile(region, username):
 	userInfo = []
 	masteryInfo = []
-	URL = "https://" + region + ".api.pvp.net/api/lol/" + region + "/v1.4/summoner/by-name/" + username + "?api_key=" + apiKey
+	usernameSearch = username.replace(" ", "")
+	URL = "https://" + region + ".api.pvp.net/api/lol/" + region + "/v1.4/summoner/by-name/" + usernameSearch + "?api_key=" + apiKey
 	userInfo.append(username)
 	searchResponse = requests.get(URL)
 	if (searchResponse.status_code != 200):
 			return render_template("invalid.html", name=username, loc=region)
 	searchResponse = searchResponse.json()
-	summonerIDs = searchResponse.get(username.lower())
+	summonerIDs = searchResponse.get(usernameSearch.lower())
 	iconID = str(summonerIDs.get('profileIconId'))
 	URLICON = "http://ddragon.leagueoflegends.com/cdn/6.22.1/img/profileicon/"  + iconID + ".png"
 	summonerID = summonerIDs.get('id')

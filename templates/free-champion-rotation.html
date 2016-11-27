@@ -39,9 +39,6 @@ function rotation(){
       url: "/champion_info",
       data: {'id' : response.info[i]},
       success : function(data){
-        if (i == 0){
-          changeImage(data.info);
-        }
         var a = document.createElement("a");
         var x = document.createElement("IMG");
         //x.setAttribute("onclick", "http://google.com");
@@ -52,6 +49,10 @@ function rotation(){
         //a.setAttribute("href", "javascript:changeImage(\'' + data.info[0] +'\')");
         a.addEventListener('click', function(){changeImage(data.info);});
         document.getElementById("pics").appendChild(a);
+        if (!document.body.background){
+          changeImage(data.info);
+
+        }
         //document.body.appendChild(a);
       }
     })
@@ -64,6 +65,7 @@ function rotation(){
 <script>
 function changeImage(champ){
   if (document.body){
+    champ[0] = champ[0].replace(/\s+/g, '');
     string = "http://ddragon.leagueoflegends.com/cdn/img/champion/splash/" + champ[0] + "_0.jpg";
     document.body.background = string;
     document.getElementById("name").innerHTML = champ[0];
