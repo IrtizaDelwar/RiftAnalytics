@@ -1,10 +1,17 @@
 .jumbotron{
 	background: #00796B;
-    color: #FFFFFF;
+    font-family: 'Bungee', cursive;
+    color: #212121;
+
 }
 
 .jumbotron p{
     color: #FFFFFF;
+
+}
+
+.index{
+    font-family: 'Bungee', cursive;
 }
 
 input
@@ -87,7 +94,6 @@ body, html {
 .mastery-info{
     height: 460px;
     width: 100%;
-    height: 100%;
     background-image: url("http://img2.wikia.nocookie.net/__cb20141106230719/leagueoflegends/images/d/d3/Summoners_rift_platform.png");
     background-repeat: no-repeat;
     border: 2px solid black;
@@ -95,6 +101,16 @@ body, html {
     text-align: center;
     text-shadow: 2px 2px #000000;
     font-family: 'Alegreya SC', serif;
+
+    position: fixed;
+    top: 50;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    max-width: 100%;
+    max-height: 100%;
+    margin: auto;
+    overflow: auto;
 }
 
 .mastery-info h5, h3, h4{
