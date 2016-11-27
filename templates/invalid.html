@@ -1,0 +1,70 @@
+<!DOCTYPE HTML>
+
+<html>
+
+<head>
+
+  <meta charset="utf-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1">
+   <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+   <link href="https://fonts.googleapis.com/css?family=Bungee" rel="stylesheet">
+   <link type="text/css" rel="stylesheet" href="{{ url_for('static',filename='stylesheet.css') }}"/>
+   <title>Rift Analytics</title>
+
+   <script>
+  function newDoc()
+  {
+    var user = document.getElementById("searchTxt").value;
+    var e = document.getElementById("region");
+    var region = e.options[e.selectedIndex].text;
+    if (user.length > 0){
+      window.location.assign("/profile/" +  region + "/" + user)
+    }
+    else{
+      alert("Please type a valid summoner name. Length must be between 1 and 16.")
+    }
+  }
+</script>
+
+
+</head>
+
+<nav class="navbar navbar-inverse navbar-fixed-top">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/">Rift Analytics</a>
+    </div>
+    <div class="collapse navbar-collapse" id="myNavbar">
+      <ul class="nav navbar-nav">
+        <li><a href="/free-champion-rotation"><span class="glyphicon glyphicon-retweet"></span> Free Champion Rotation </a></li>
+        <li><a href="/ultimate-bravery"><span class="glyphicon glyphicon-fire"></span> Ultimate Bravery </a></li>
+        <li><a href="#"><span class="glyphicon glyphicon-tasks"></span> Top Lists </a></li>
+        <li><a href="#"><span class="glyphicon glyphicon-eye-open"></span> Live Match Predictor </a></li>
+        <li><a href="#"><span class="glyphicon glyphicon-road"></span> Rankings </a></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <button class="button" onclick="newDoc()"><span class="glyphicon glyphicon-search"></span> </button> <input name="searchTxt" type="text" maxlength="16" id="searchTxt" placeholder="Name.." class="searchField"/> 
+        <select id="region">
+        <option>NA</option>
+        <option>EUW</option>
+        <option>EUNE</option>
+        <option>KR</option>
+        </select></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+
+    <div class="invalid">
+      <br>
+      <h1> Sorry! The username {{ name }} is invalid for the server: {{ loc }}. Please Try again!</h1>
+
+    </div>
+
+</html>

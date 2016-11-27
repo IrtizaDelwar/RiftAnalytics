@@ -3,7 +3,8 @@ from flask import Flask, render_template, request, jsonify
 
 app = Flask(__name__, static_url_path='')
 
-apiKey = "RGAPI-fb1301bf-3c9e-4c02-8d6e-a00257350d0c"
+#apiKey = "RGAPI-fb1301bf-3c9e-4c02-8d6e-a00257350d0c"
+apiKey = "a1c01d0f-b83b-4c38-89de-64de9b80ad5f"
 
 @app.route('/')
 def index():
@@ -17,7 +18,7 @@ def profile(region, username):
 	userInfo.append(username)
 	searchResponse = requests.get(URL)
 	if (searchResponse.status_code != 200):
-			return render_template("profile.html", name=username, stats=userInfo, mastery=masteryInfo)
+			return render_template("invalid.html", name=username, loc=region)
 	searchResponse = searchResponse.json()
 	summonerIDs = searchResponse.get(username.lower())
 	iconID = str(summonerIDs.get('profileIconId'))
@@ -26,34 +27,36 @@ def profile(region, username):
 	summonerLevel = summonerIDs.get('summonerLevel')
 	userInfo.append(str(summonerLevel))
 	if (summonerLevel != 30):
-		userInfo.append("not ranked")
 		userInfo.append("0")
 		userInfo.append("0")
+		userInfo.append("UNRANKED")
+		userInfo.append("unranked")
+		userInfo.append(URLICON)
 		userInfo.append("No Games")
-		return render_template("profile.html", name=username, stats=userInfo, mastery=masteryInfo)
-	#self.userID = str(summonerID)
-	URLRANK  = "https://" + region + ".api.pvp.net/api/lol/" + region + "/v2.5/league/by-summoner/" + str(summonerID) + "/entry?api_key=" + apiKey
-	rankResponse = requests.get(URLRANK)
-	rankResponse = rankResponse.json()
-	rankData = rankResponse.get(str(summonerID))
-	soloRankData = rankData[0]
-	soloRankTier = soloRankData.get('tier')
-	soloRankDivision = soloRankData.get('entries')
-	soloRankDivision = soloRankDivision[0]
-	soloRankDivisions = soloRankDivision.get('division')
-	wins = soloRankDivision.get('wins')
-	losses = soloRankDivision.get('losses')
-	userInfo.append(str(wins))
-	userInfo.append(str(losses))
-	ratio = "{0:.2f}%".format(wins/(wins+losses) * 100)
-	lp = soloRankDivision.get('leaguePoints')
-	soloRankStats = str(soloRankTier) + " " + str(soloRankDivisions)
-	userInfo.append(soloRankStats)
-	soloRankImage = "{{ url_for('static',filename='images/" + str(soloRankTier) + ".png') }}"
-	userInfo.append(soloRankImage)
-	userInfo.append(URLICON)
-	userInfo.append(str(ratio))
-	userInfo.append(str(lp))
+		userInfo.append("--")
+	else:
+		URLRANK  = "https://" + region + ".api.pvp.net/api/lol/" + region + "/v2.5/league/by-summoner/" + str(summonerID) + "/entry?api_key=" + apiKey
+		rankResponse = requests.get(URLRANK)
+		rankResponse = rankResponse.json()
+		rankData = rankResponse.get(str(summonerID))
+		soloRankData = rankData[0]
+		soloRankTier = soloRankData.get('tier')
+		soloRankDivision = soloRankData.get('entries')
+		soloRankDivision = soloRankDivision[0]
+		soloRankDivisions = soloRankDivision.get('division')
+		wins = soloRankDivision.get('wins')
+		losses = soloRankDivision.get('losses')
+		userInfo.append(str(wins))
+		userInfo.append(str(losses))
+		ratio = "{0:.2f}%".format(wins/(wins+losses) * 100)
+		lp = soloRankDivision.get('leaguePoints')
+		soloRankStats = str(soloRankTier) + " " + str(soloRankDivisions)
+		userInfo.append(soloRankStats)
+		soloRankImage = str(soloRankTier) + "Icon"
+		userInfo.append(soloRankImage)
+		userInfo.append(URLICON)
+		userInfo.append(str(ratio))
+		userInfo.append(str(lp))
 	URLMASTERY = "https://na.api.pvp.net/championmastery/location/NA1/player/" + str(summonerID) + "/topchampions?count=5&api_key=" + apiKey
 	masteryResponse = requests.get(URLMASTERY)
 	masteryResponse = masteryResponse.json()

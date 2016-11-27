@@ -89,7 +89,11 @@ $(document).ready(function() {
           </div>
           <div class="row">
             <div class="col-md-6">
-            <img src= "{{ url_for('static',filename='images/platinum.png') }}">
+            <p id ="rankImage"></p>
+            <script>
+              var temp = '{{ stats[5] }}';
+              document.getElementById("rankImage").innerHTML = "<img src =https://www.primeboosting.com/Content/images/RankedIcons/" + temp + ".png>";
+            </script>
             <p> Rank: {{ stats[4] }}</p> <p>{{ stats[8] }} LP</p></div>
             <div class="col-md-1">
               <div style="border-left:1px solid #DAA520;height:250px"></div></div>
