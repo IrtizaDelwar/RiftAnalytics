@@ -6,7 +6,7 @@
 }
 
 .jumbotron p{
-    color: #FFFFFF;
+    color: #B2DFDB;
 
 }
 
@@ -14,16 +14,30 @@
     font-family: 'Bungee', cursive;
 }
 
+select{
+    color: #000000;
+    background: transparent;
+    background: #FFFFFF;
+    border:solid 1px black; 
+    font-weight: bold;
+
+    -moz-border-radius: 9px 9px 9px 9px;
+    -webkit-border-radius: 9px 9px 9px 9px;
+    border-radius: 9px 9px 9px 9px;
+    box-shadow: 1px 1px 11px #330033;
+}
 input
 {
-  -moz-border-radius: 5px;
- border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
     border:solid 1px black; 
     padding:5px;
 }
 
 .button {
-    background-color: #008CBA; 
+    background-color: #FFC107;
+    border-radius: 5px; 
     border: none;
     color: white;
     padding: 15px 32px;
@@ -103,7 +117,6 @@ body, html {
     font-family: 'Alegreya SC', serif;
 
     position: fixed;
-    top: 50;
     bottom: 0;
     left: 0;
     right: 0;

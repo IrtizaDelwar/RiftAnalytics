@@ -77,8 +77,7 @@ def profile(region, username):
 		subInfo.append(str(masteryResponse[x].get('championLevel')))
 		subInfo.append(str(masteryResponse[x].get('championPoints')))
 		masteryInfo.append(subInfo)
-
-		#return summonerIDs
+	masteryInfo = valid_mastery(masteryInfo)
 	return render_template("profile.html", name=username, stats=userInfo, mastery=masteryInfo)
 
 @app.route('/ultimate-bravery')
@@ -149,6 +148,18 @@ def champion_rotation():
 		currentChampID = str(currentDict.get('id'))
 		champIDs.append(currentChampID)
 	return jsonify({ 'info' : champIDs})
+
+def valid_mastery(masteryInformationList):
+	while (len(masteryInformationList) < 6):
+		subInfo = []
+		subInfo.append("Not Enough Champions")
+		subInfo.append("Teemo.png")
+		subInfo.append("0")
+		subInfo.append("0")
+		masteryInformationList.append(subInfo)
+	return masteryInformationList;
+
+
 
 if __name__ == "__main__":
 	app.run(debug=True)
