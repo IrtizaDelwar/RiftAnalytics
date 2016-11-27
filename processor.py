@@ -18,8 +18,9 @@ def profile(region, username):
 	URL = "https://" + region + ".api.pvp.net/api/lol/" + region + "/v1.4/summoner/by-name/" + usernameSearch + "?api_key=" + apiKey
 	userInfo.append(username)
 	searchResponse = requests.get(URL)
-	if (searchResponse.status_code != 200):
-			return render_template("invalid.html", name=username, loc=region)
+	if (valid_api_request(searchResponse) == False):
+		errorReport = get_error(searchResponse)
+		return render_template("invalid.html", error=errorReport)
 	searchResponse = searchResponse.json()
 	summonerIDs = searchResponse.get(usernameSearch.lower())
 	iconID = str(summonerIDs.get('profileIconId'))
@@ -159,7 +160,24 @@ def valid_mastery(masteryInformationList):
 		masteryInformationList.append(subInfo)
 	return masteryInformationList;
 
+def valid_api_request(apiResponse):
+	if (apiResponse.status_code != 200):
+		return False
+	return True
 
+def get_error(apiResponse):
+	if (apiResponse.status_code == 404):
+		return "Error 404: No summoner data found for the specified inputs. Please try a different summoner name or region."
+	elif(apiResponse.status_code == 401):
+		return "Error 401: The API Key is invalid, contact the administrator to fix the key."
+	elif(apiResponse.status_code == 429):
+		return "Error 429: The rate limit for the API Key was exceeded. Please wait a minute before trying again."
+	elif(apiResponse.status_code == 500):
+		return "Error 500: Internal service error. There is a problem with the Riot Games API."
+	elif(apiResponse.status_code == 503):
+		return "Error 503: The Riot Games API is currently unavailable."
+	else:
+		return "An unspecified error occured."
 
 if __name__ == "__main__":
 	app.run(debug=True)

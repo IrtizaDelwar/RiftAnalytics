@@ -50,30 +50,37 @@ input
     margin: 15px;
 }
 
+.nav-tabs{
+    margin-top:50px;
+}
+
 body, html {
     height: 100%;
     width: 100%;
 }
 .invalid{
     color: #FFFFFF;
-    margin-top: 50px;
     background-color: #212121;
     background-image: url("http://i.imgur.com/9Se4k7u.jpg");
     background-repeat: no-repeat;
     min-height: 100%;
     min-width: 100%;
+    margin-top: 50px;
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
 }
 .profile{
     color: #DAA520;
     font-family: 'Alegreya SC', serif;
     height: 100%;
     width: 100%;
-    background: #34495E;
+    background: #00796B;
     border: 2px solid black;
     border-radius: 8px;
     text-shadow: 2px 2px #000000;
-    /*background-image: url("http://ddragon.leagueoflegends.com/cdn/img/champion/splash/Zyra_0.jpg");*/
     text-align: center;
+    bottom: 0;
 }
 .profileTop{
     background-image: url("http://i.imgur.com/NCXIS6C.png");
@@ -110,12 +117,14 @@ body, html {
     width: 100%;
     background-image: url("http://img2.wikia.nocookie.net/__cb20141106230719/leagueoflegends/images/d/d3/Summoners_rift_platform.png");
     background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
     border: 2px solid black;
     border-radius: 8px;
     text-align: center;
     text-shadow: 2px 2px #000000;
     font-family: 'Alegreya SC', serif;
-
     position: fixed;
     bottom: 0;
     left: 0;
