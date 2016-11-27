@@ -21,7 +21,7 @@
       window.location.assign("/profile/" +  region + "/" + user)
     }
     else{
-      alert("Please type a value summoner name. Length must be between 1 and 12.")
+      alert("Please type a valid summoner name. Length must be between 1 and 16.")
     }
   }
 </script>
@@ -48,7 +48,7 @@
         <li><a href="#"><span class="glyphicon glyphicon-road"></span> Rankings </a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <button class="button" onclick="newDoc()"><span class="glyphicon glyphicon-search"></span> </button> <input name="searchTxt" type="text" maxlength="12" id="searchTxt" placeholder="Name.." class="searchField"/> 
+        <button class="button" onclick="newDoc()"><span class="glyphicon glyphicon-search"></span> </button> <input name="searchTxt" type="text" maxlength="16" id="searchTxt" placeholder="Name.." class="searchField"/> 
         <select id="region">
         <option>NA</option>
         <option>EUW</option>

@@ -1,6 +1,12 @@
 .jumbotron{
-	background: #AEB6BF;
+	background: #00796B;
+    color: #FFFFFF;
 }
+
+.jumbotron p{
+    color: #FFFFFF;
+}
+
 input
 {
   -moz-border-radius: 5px;
@@ -30,7 +36,7 @@ body, html {
 .profile{
     color: #DAA520;
     font-family: 'Alegreya SC', serif;
-    height: auto;
+    height: 100%;
     width: 100%;
     background: #34495E;
     border: 2px solid black;
@@ -49,10 +55,20 @@ body, html {
     color: #DAA520;
     text-shadow: 2px 2px #000000;
     font-family: 'Alegreya SC', serif;
+    font-weight: bold;
 }
 
 .ub{
     font-family: 'Bungee', cursive;
+    color: #212121;
+}
+
+.ub h3{
+    color: #212121;
+}
+
+.ub p{
+    color: #212121;
 }
 
 .col-md-1 p{
@@ -79,5 +95,5 @@ body, html {
 }
 
 .mastery-info h2{
-    color: #B2DFDB;
+    color: #009688;
 }
