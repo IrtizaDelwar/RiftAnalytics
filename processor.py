@@ -1,5 +1,7 @@
 import requests
 from flask import Flask, render_template, request, jsonify
+from User import User
+from Champion import Champion
 
 app = Flask(__name__, static_url_path='')
 
@@ -17,6 +19,7 @@ def profile(region, username):
 	userInfo = []
 	masteryInfo = []
 	#Take out all spaces in the username, as the api does not include usernames
+	user = User(username)
 	usernameSearch = username.replace(" ", "")
 	#Creates the URL for the API request to get the summoner ID of the summoner name passed in.
 	URL = "https://" + region + ".api.pvp.net/api/lol/" + region + "/v1.4/summoner/by-name/" + usernameSearch + "?api_key=" + apiKey
@@ -31,7 +34,9 @@ def profile(region, username):
 	#Creates the URL for icon the username is using
 	URLICON = "http://ddragon.leagueoflegends.com/cdn/6.22.1/img/profileicon/"  + iconID + ".png"
 	summonerID = summonerIDs.get('id')
+	user.setNameID(summonerID)
 	summonerLevel = summonerIDs.get('summonerLevel')
+	user.setLevel(summonerLevel)
 	#If the username is not level 30, then initialize all the ranked stats to 0/unranked. As the API does not have any values for it.
 	userInfo.append(str(summonerLevel))
 	if (summonerLevel != 30):
@@ -43,7 +48,7 @@ def profile(region, username):
 		userInfo.append("No Games")
 		userInfo.append("--")
 	else: #Else get the ranked stats for the username. Create the URL for the API request for the summoners ranked stats
-		URLRANK  = "https://" + region + ".api.pvp.net/api/lol/" + region + "/v2.5/league/by-summoner/" + str(summonerID) + "/entry?api_key=" + apiKey2
+		URLRANK  = "https://" + region + ".api.pvp.net/api/lol/" + region + "/v2.5/league/by-summoner/" + user.nameID + "/entry?api_key=" + apiKey2
 		rankResponse = requests.get(URLRANK)
 		if (valid_api_request(rankResponse) == False):
 			errorReport = get_error(rankResponse)
@@ -63,6 +68,7 @@ def profile(region, username):
 		ratio = "{0:.2f}%".format(wins/(wins+losses) * 100)
 		lp = soloRankDivision.get('leaguePoints')
 		soloRankStats = str(soloRankTier) + " " + str(soloRankDivisions)
+		user.setSoloRank(soloRankStats)
 		userInfo.append(soloRankStats)
 		soloRankImage = str(soloRankTier) + "Icon"
 		userInfo.append(soloRankImage)
@@ -118,7 +124,8 @@ def champion_info():
 	#Creates the URL to make the api request for the champion needed
 	champ_id = request.form['id']
 	if champ_id:
-		URL = "https://global.api.pvp.net/api/lol/static-data/na/v1.2/champion/" + champ_id + "?champData=image&api_key=" + apiKey
+		current_Champion = Champion(champ_id) #Creates the champion object
+		URL = "https://global.api.pvp.net/api/lol/static-data/na/v1.2/champion/" + current_Champion.ID + "?champData=image&api_key=" + apiKey
 		champInfoResponse = requests.get(URL)
 		if (valid_api_request(champInfoResponse) == False):
 			errorReport = get_error(champInfoResponse)
@@ -126,6 +133,7 @@ def champion_info():
 		champInfoResponse = champInfoResponse.json()
 		champInfo = []
 		champInfo.append(str(champInfoResponse.get('name')))
+		current_Champion.setChampName(str(champInfoResponse.get('name')))
 		champInfo.append(str(champInfoResponse.get('title')))
 		picDict = champInfoResponse.get('image')
 		champInfo.append(picDict.get('full'))
@@ -136,7 +144,8 @@ def champion_info():
 def item_info():
 	#Creates URL for the API request for the item needed
 	item_id = request.form['id']
-	URL = "https://global.api.pvp.net/api/lol/static-data/na/v1.2/item/" + item_id + "?itemData=image&api_key=" + apiKey
+	current_item = Item(item_id) #Creates an Item object
+	URL = "https://global.api.pvp.net/api/lol/static-data/na/v1.2/item/" + current_item.ID + "?itemData=image&api_key=" + apiKey
 	itemInfoResponse = requests.get(URL)
 	if (valid_api_request(itemInfoResponse) == False):
 		errorReport = get_error(itemInfoResponse)
@@ -145,6 +154,7 @@ def item_info():
 	itemInfo = []
 	#Gets the information needed from the dictionary and appends to the list it returns to the browser.
 	itemInfo.append(str(itemInfoResponse.get('name')))
+	current_item.setName(str(itemInfoResponse.get('name')))
 	picDict = itemInfoResponse.get('image')
 	itemInfo.append(picDict.get('full'))
 	return jsonify({'info' : itemInfo})
@@ -188,11 +198,14 @@ def champion_rotation():
 	freeChampionResponse = freeChampionResponse.json()
 	freeChampIDs = freeChampionResponse.get('champions')
 	champIDs = []
+	championList = []
 	#Since the API returns a dictionary of information. We want to parse through it to get the information the browser needs.
 	for x in range(len(freeChampIDs)):
 		currentDict = freeChampIDs[x]
 		currentChampID = str(currentDict.get('id'))
+		curr_Champion = Champion(currentChampID)
 		champIDs.append(currentChampID)
+		championList.append(curr_Champion)
 	return jsonify({ 'info' : champIDs})
 
 def valid_mastery(masteryInformationList):
@@ -231,22 +244,25 @@ def get_error(apiResponse):
 
 def recent_game(region, username):
 	gameInfo = []
+	curr_user = User(str(username))
 	#Creates URL for the API Requests, then requests it from the api
-	URL = "https://" + region + ".api.pvp.net/api/lol/" + region + "/v1.3/game/by-summoner/" + str(username) + "/recent?api_key=" + apiKey
+	URL = "https://" + region + ".api.pvp.net/api/lol/" + region + "/v1.3/game/by-summoner/" + curr_user.username + "/recent?api_key=" + apiKey
 	searchResponse = requests.get(URL)
 	searchResponse = searchResponse.json()
 	allGames = searchResponse.get('games')
 	#Select the first game (most recent) in the array of games
 	gameResponse = allGames[0]
 	champion = gameResponse.get('championId')
+	cur_Champion = Champion(str(champion))
 	#URL to get the information for the champion the user played in their post recent game
-	CHAMPURL = "https://global.api.pvp.net/api/lol/static-data/na/v1.2/champion/" + str(champion) + "?champData=image&api_key=" + apiKey
+	CHAMPURL = "https://global.api.pvp.net/api/lol/static-data/na/v1.2/champion/" + cur_Champion.ID + "?champData=image&api_key=" + apiKey
 	champResponse = requests.get(CHAMPURL)
 	champResponse = champResponse.json()
 	#Get the dictionary of stats from the most recent game
 	stats = gameResponse.get('stats')
 	assists = stats.get('assists')
 	gameInfo.append(str(champResponse.get('name')))
+	cur_Champion.setChampName(str(champResponse.get('name')))
 	picDict = champResponse.get('image')
 	gameInfo.append(picDict.get('full'))
 	assists = 0
@@ -265,7 +281,7 @@ def recent_game(region, username):
 	gameInfo.append(str(deaths))
 	gameInfo.append(str(assists))
 	gameInfo.append(str(stats.get('win')))
-	print(str(stats.get('win')))
+	#print(str(stats.get('win')))
 	KDA = "{0:.2f}".format((kills + assists) / deaths)
 	gameInfo.append(str(KDA))
 	return gameInfo
