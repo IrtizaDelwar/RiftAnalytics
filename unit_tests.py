@@ -40,10 +40,11 @@ class MyTest(TestCase):
 		response = tester.get('/champion_info', headers=[('X-Requested-With'), ('XMLHttpRequest')])
 		response = response.data
 		print('response')
-		
+
 	def test_recent_game(self):
-		recent = processor.recent_game("na", "G0ldfish")
-		print(recent)
+		recent = processor.recent_game("na", "23629510")
+		#print(recent)
+		self.assertEqual(len(recent), 7)
 		
 if __name__ == '__main__':
 	unittest.main()

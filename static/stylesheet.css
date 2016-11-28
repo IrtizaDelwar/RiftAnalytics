@@ -61,6 +61,8 @@ input
 }
 body{
     background-color: #BDBDBD;
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 
 body, html {
