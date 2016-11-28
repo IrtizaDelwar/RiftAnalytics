@@ -93,17 +93,32 @@ $(document).ready(function() {
               var temp = '{{ stats[5] }}';
               document.getElementById("rankImage").innerHTML = "<img src =https://www.primeboosting.com/Content/images/RankedIcons/" + temp + ".png>";
             </script>
-            <p> Rank: {{ stats[4] }}</p> <p>{{ stats[8] }} LP</p></div>
+            <p>{{ stats[4] }}</p><p>{{ stats[8] }} LP</p>
+            <p> Wins: {{ stats[2] }}  Losses: {{ stats[3] }} </p>
+            <p> Win Ratio: {{ stats[7] }} </p> </div>
             <div class="col-md-1">
               <div style="border-left:1px solid #DAA520;height:250px"></div></div>
             <div class="col-md-4">
+              <h1> Recent Game </h1>
               <p id ="champImage"></p>
               <script>
-                var temp = '{{ mastery[1][1] }}';
-                document.getElementById("image").innerHTML = "<img src =http://ddragon.leagueoflegends.com/cdn/6.23.1/img/champion/" + temp + " height='50' width='50'>";
-              </script> 
-              <p> Wins: {{ stats[2] }}  Losses: {{ stats[3] }} </p>
-              <p> Win Ratio: {{ stats[7] }} </p> </div>
+                var temp = '{{ game[1] }}';
+                document.getElementById("champImage").innerHTML = "<img src =http://ddragon.leagueoflegends.com/cdn/6.23.1/img/champion/" + temp + " height='75' width='75'>"; 
+              </script>
+              <p> {{ game[0] }} </p>
+              <h2> KDA: {{ game[6] }} </h2>
+              <p> {{ game[2] }} / {{ game[3] }} / {{ game[4] }} </p>
+              <h2 id="gameRecord"></h2>
+              <script>
+                val = '{{ game[5] }}'
+                if (val != "false"){
+                  document.getElementById("gameRecord").innerHTML = "<span style='color:green'> WIN </span>"
+                }
+                else{
+                  document.getElementById("gameRecord").innerHTML = "<span style='color:red'> LOSS </span>"
+                }
+              </script>
+              </div>
           </div>
         </div>
       </div>

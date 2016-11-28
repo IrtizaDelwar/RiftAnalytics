@@ -1,9 +1,9 @@
-import requests
+import requests, sys
 from flask import Flask, render_template, request, jsonify
 
 app = Flask(__name__, static_url_path='')
 
-#apiKey = "RGAPI-fb1301bf-3c9e-4c02-8d6e-a00257350d0c"
+apiKey2 = "RGAPI-fb1301bf-3c9e-4c02-8d6e-a00257350d0c"
 apiKey = "a1c01d0f-b83b-4c38-89de-64de9b80ad5f"
 
 @app.route('/')
@@ -37,8 +37,11 @@ def profile(region, username):
 		userInfo.append("No Games")
 		userInfo.append("--")
 	else:
-		URLRANK  = "https://" + region + ".api.pvp.net/api/lol/" + region + "/v2.5/league/by-summoner/" + str(summonerID) + "/entry?api_key=" + apiKey
+		URLRANK  = "https://" + region + ".api.pvp.net/api/lol/" + region + "/v2.5/league/by-summoner/" + str(summonerID) + "/entry?api_key=" + apiKey2
 		rankResponse = requests.get(URLRANK)
+		if (valid_api_request(rankResponse) == False):
+			errorReport = get_error(rankResponse)
+			return render_template("invalid.html", error=errorReport)
 		rankResponse = rankResponse.json()
 		rankData = rankResponse.get(str(summonerID))
 		soloRankData = rankData[0]
@@ -61,9 +64,15 @@ def profile(region, username):
 		userInfo.append(str(lp))
 	URLMASTERY = "https://na.api.pvp.net/championmastery/location/NA1/player/" + str(summonerID) + "/topchampions?count=5&api_key=" + apiKey
 	masteryResponse = requests.get(URLMASTERY)
+	if (valid_api_request(masteryResponse) == False):
+		errorReport = get_error(masteryResponse)
+		return render_template("invalid.html", error=errorReport)
 	masteryResponse = masteryResponse.json()
-	URLSCORE = "https://na.api.pvp.net/championmastery/location/NA1/player/" + str(summonerID) + "/score?api_key=" + apiKey
+	URLSCORE = "https://na.api.pvp.net/championmastery/location/NA1/player/" + str(summonerID) + "/score?api_key=" + apiKey2
 	masteryScoreResponse = requests.get(URLSCORE)
+	if (valid_api_request(masteryScoreResponse) == False):
+		errorReport = get_error(masteryScoreResponse)
+		return render_template("invalid.html", error=errorReport)
 	masteryScoreResponse = masteryScoreResponse.json()
 	masteryInfo.append(str(masteryScoreResponse))
 	for x in range(len(masteryResponse)):
@@ -71,6 +80,9 @@ def profile(region, username):
 		champID = str(masteryResponse[x].get('championId'))
 		URLCHAMP = "https://global.api.pvp.net/api/lol/static-data/na/v1.2/champion/" + champID + "?champData=image&api_key=" + apiKey
 		champResponse = requests.get(URLCHAMP)
+		if (valid_api_request(champResponse) == False):
+			errorReport = get_error(champResponse)
+			return render_template("invalid.html", error=errorReport)
 		champResponse = champResponse.json()
 		subInfo.append(str(champResponse.get('name')))
 		picDict = champResponse.get('image')
@@ -79,7 +91,8 @@ def profile(region, username):
 		subInfo.append(str(masteryResponse[x].get('championPoints')))
 		masteryInfo.append(subInfo)
 	masteryInfo = valid_mastery(masteryInfo)
-	return render_template("profile.html", name=username, stats=userInfo, mastery=masteryInfo)
+	recentGame = recent_game(region, summonerID)
+	return render_template("profile.html", name=username, stats=userInfo, mastery=masteryInfo, game=recentGame)
 
 @app.route('/ultimate-bravery')
 def ultimate_bravery():
@@ -96,6 +109,9 @@ def champion_info():
 	if champ_id:
 		URL = "https://global.api.pvp.net/api/lol/static-data/na/v1.2/champion/" + champ_id + "?champData=image&api_key=" + apiKey
 		champInfoResponse = requests.get(URL)
+		if (valid_api_request(champInfoResponse) == False):
+			errorReport = get_error(champInfoResponse)
+			return render_template("invalid.html", error=errorReport)
 		champInfoResponse = champInfoResponse.json()
 		champInfo = []
 		champInfo.append(str(champInfoResponse.get('name')))
@@ -110,6 +126,9 @@ def item_info():
 	item_id = request.form['id']
 	URL = "https://global.api.pvp.net/api/lol/static-data/na/v1.2/item/" + item_id + "?itemData=image&api_key=" + apiKey
 	itemInfoResponse = requests.get(URL)
+	if (valid_api_request(itemInfoResponse) == False):
+		errorReport = get_error(itemInfoResponse)
+		return render_template("invalid.html", error=errorReport)
 	itemInfoResponse = itemInfoResponse.json()
 	itemInfo = []
 	itemInfo.append(str(itemInfoResponse.get('name')))
@@ -124,7 +143,13 @@ def sspell_info():
 	URL = "https://global.api.pvp.net/api/lol/static-data/na/v1.2/summoner-spell/" + spell_id + "?spellData=image&api_key=" + apiKey
 	URL2 = "https://global.api.pvp.net/api/lol/static-data/na/v1.2/summoner-spell/" + spell_id2 + "?spellData=image&api_key=" + apiKey
 	spellInfoResponse = requests.get(URL)
+	if (valid_api_request(spellInfoResponse) == False):
+		errorReport = get_error(spellInfoResponse)
+		return render_template("invalid.html", error=errorReport)
 	spellInfoResponse2 = requests.get(URL2)
+	if (valid_api_request(spellInfo2Response) == False):
+		errorReport = get_error(spellInfo2Response)
+		return render_template("invalid.html", error=errorReport)
 	spellInfoResponse = spellInfoResponse.json()
 	spellInfoResponse2 = spellInfoResponse2.json()
 	spellInfo = []
@@ -139,8 +164,11 @@ def sspell_info():
 
 @app.route('/champion_rotation', methods=['POST'])
 def champion_rotation():
-	URL = "https://na.api.pvp.net/api/lol/na/v1.2/champion?freeToPlay=true&api_key=" + apiKey
+	URL = "https://na.api.pvp.net/api/lol/na/v1.2/champion?freeToPlay=true&api_key=" + apiKey2
 	freeChampionResponse = requests.get(URL)
+	if (valid_api_request(freeChampionResponse) == False):
+		errorReport = get_error(freeChampionResponse)
+		return render_template("invalid.html", error=errorReport)
 	freeChampionResponse = freeChampionResponse.json()
 	freeChampIDs = freeChampionResponse.get('champions')
 	champIDs = []
@@ -178,6 +206,30 @@ def get_error(apiResponse):
 		return "Error 503: The Riot Games API is currently unavailable."
 	else:
 		return "An unspecified error occured."
+
+def recent_game(region, username):
+	gameInfo = []
+	URL = "https://" + region + ".api.pvp.net/api/lol/" + region + "/v1.3/game/by-summoner/" + str(username) + "/recent?api_key=" + apiKey
+	searchResponse = requests.get(URL)
+	searchResponse = searchResponse.json()
+	allGames = searchResponse.get('games')
+	gameResponse = allGames[0]
+	champion = gameResponse.get('championId')
+	CHAMPURL = "https://global.api.pvp.net/api/lol/static-data/na/v1.2/champion/" + str(champion) + "?champData=image&api_key=" + apiKey
+	champResponse = requests.get(CHAMPURL)
+	champResponse = champResponse.json()
+	stats = gameResponse.get('stats')
+	assists = stats.get('assists')
+	gameInfo.append(str(champResponse.get('name')))
+	picDict = champResponse.get('image')
+	gameInfo.append(picDict.get('full'))
+	gameInfo.append(str(stats.get('championsKilled')))
+	gameInfo.append(str(stats.get('numDeaths')))
+	gameInfo.append(str(stats.get('assists')))
+	gameInfo.append(str(stats.get('win')))
+	KDA = "{0:.2f}".format((stats.get('championsKilled') + stats.get('assists')) / stats.get('numDeaths'))
+	gameInfo.append(str(KDA))
+	return gameInfo
 
 if __name__ == "__main__":
 	app.run(debug=True)
