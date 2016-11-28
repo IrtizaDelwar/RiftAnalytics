@@ -12,29 +12,8 @@
    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
    <title>Rift Analytics</title>
-   <script>
-  function newDoc()
-  {
-    var user = document.getElementById("searchTxt").value;
-    var e = document.getElementById("region");
-    var region = e.options[e.selectedIndex].text;
-    if (user.length > 0){
-      window.location.assign("/profile/" +  region + "/" + user)
-    }
-    else{
-      alert("Please type a valid summoner name. Length must be between 1 and 16.")
-    }
-  }
-</script>
+   <script type="text/javascript" src="{{ url_for('static', filename='/scripts/search.js') }}"></script>
 
-<script>
-$(document).ready(function() {
-    $("#click-me-div").click(function() {
-        alert('yes, the click actually happened');
-        $('.nav-tabs a[href="#samosas"]').tab('show');
-    });
-});
-</script>
 
 </head>
 
@@ -158,44 +137,6 @@ $(document).ready(function() {
      </div></div>
 </div>
 </body>
-
-
-<!-- Centered Tabs -->
-<!--<ul class="nav nav-tabs nav-justified">
-  <li class="active"><a href="#">Profile</a></li>
-  <li><a href="#">Mastery</a></li>
-  <li><a href="#">Champion Statistics</a></li>
-  <li><a href="#">Match History</a></li>
-</ul>
-<body>
-  <div class="profile">
-    <div class="container">
-      <div class="profileTop">
-    <div class="col-md-1"></div>
-    <img style="position:relative; top:50px; right:500px; width:100px; height:100px" src={{ stats[6] }}>
-    <h3 style="position:relative; bottom:50px; right:300px;"> {{ stats[0] }} </h3> <p style="position:relative; bottom:50px; right:300px;">Level: {{stats[1]}}</p>
-    </div>
-    <div class="row">
-    <div class="col-md-6">
-      <img src= "{{ url_for('static',filename='images/platinum.png') }}">
-    <p> Rank: {{ stats[4] }}</p> <p>{{ stats[8] }} LP</p></div>
-    <div class="col-md-1">
-    <div style="border-left:1px solid #DAA520;height:250px"></div></div>
-    <div class="col-md-4">
-    <p> Wins: {{ stats[2] }}  Losses: {{ stats[3] }} </p>
-    <p> Win Ratio: {{ stats[7] }} </p> </div>
-      </div>
-    </div>
-
-  </div>
-
-</body> -->
-<!-- <div class="panel panel-default">
-  <div class="panel-heading">{{ name }}</div>
-  <div class="panel-body">Rank: Gold V</div>
-  <div class="panel-body">Win Rate: 55%</div>
-  <div class="panel-body"></div>
-</div> -->
 
 </html>
 

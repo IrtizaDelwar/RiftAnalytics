@@ -12,67 +12,10 @@
    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
    <title>Rift Analytics</title>
 
-   <script>
-  function newDoc()
-  {
-    var user = document.getElementById("searchTxt").value;
-    var e = document.getElementById("region");
-    var region = e.options[e.selectedIndex].text;
-    if (user.length > 0){
-      window.location.assign("/profile/" +  region + "/" + user)
-    }
-    else{
-      alert("Please type a valid summoner name. Length must be between 1 and 16.")
-    }
-  }
-</script>
+   <script type="text/javascript" src="{{ url_for('static', filename='/scripts/search.js') }}"></script>
+   <script type="text/javascript" src="{{ url_for('static', filename='/scripts/rotation.js') }}"></script>
+   <script type="text/javascript" src="{{ url_for('static', filename='/scripts/changeImage.js') }}"></script>
 
-<script>
-function rotation(){
-  $.ajax({
-      type: "POST",
-      url: "/champion_rotation",
-      success : function(response){
-        for(i = 0; i < response.info.length; i++){
-          $.ajax({
-      type: "POST",
-      url: "/champion_info",
-      data: {'id' : response.info[i]},
-      success : function(data){
-        var a = document.createElement("a");
-        var x = document.createElement("IMG");
-        //x.setAttribute("onclick", "http://google.com");
-        x.setAttribute("src", "http://ddragon.leagueoflegends.com/cdn/6.23.1/img/champion/" + data.info[2]);
-        x.setAttribute("width", "60");
-        x.setAttribute("height", "60");
-        a.appendChild(x);
-        //a.setAttribute("href", "javascript:changeImage(\'' + data.info[0] +'\')");
-        a.addEventListener('click', function(){changeImage(data.info);});
-        document.getElementById("pics").appendChild(a);
-        if (!document.body.background){
-          changeImage(data.info);
-
-        }
-        //document.body.appendChild(a);
-      }
-    })
-        }
-      }
-    })
-}
-</script>
-
-<script>
-function changeImage(champ){
-  if (document.body){
-    champ[0] = champ[0].replace(/\s+/g, '');
-    string = "http://ddragon.leagueoflegends.com/cdn/img/champion/splash/" + champ[0] + "_0.jpg";
-    document.body.background = string;
-    document.getElementById("name").innerHTML = champ[0];
-    document.getElementById("desc").innerHTML = champ[1];
-  }
-}
-</script>
 
 </head>
 

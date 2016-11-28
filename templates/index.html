@@ -12,20 +12,7 @@
    <link rel="icon" href="{{ url_for('static',filename='favicon.ico') }}" />
    <title>Rift Analytics</title>
 
-   <script>
-  function newDoc()
-  {
-    var user = document.getElementById("searchTxt").value;
-    var e = document.getElementById("region");
-    var region = e.options[e.selectedIndex].text;
-    if (user.length > 0){
-      window.location.assign("/profile/" +  region + "/" + user)
-    }
-    else{
-      alert("Please type a valid summoner name. Length must be between 1 and 16.")
-    }
-  }
-</script>
+   <script type="text/javascript" src="{{ url_for('static', filename='/scripts/search.js') }}"></script>
 
 
 </head>
