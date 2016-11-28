@@ -8,6 +8,8 @@ from User import User
 from Champion import Champion
 from Item import Item
 
+# To test please run "python unit_tests1.py -v" in your command prompt.
+# Also ensure that you have requests, blinker, and flask-testing installed. (ie. pip install requests)
 # Testing with LiveServer
 class MyTest(TestCase):
 
