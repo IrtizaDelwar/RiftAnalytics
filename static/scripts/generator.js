@@ -1,3 +1,9 @@
+ // This function generates the ultimate bravery "rules"
+ // first it randomly picks a champion from the array of champion ID's and displays it image, name, and description
+ // next it picks 2 summoner spalls that aren't that same and displays their images / names.
+ // third it randomly picks a boot from the boot array and displays it's image / name.
+ // Finally it picks 6 items from array of item ids, and displays it's image / name.
+ // Have already taken out items that would choose invalid builds.
  function generator()
  {
    var championID = ['266', '103', '84', '12', '32', '34', '1', '22', '136', '268', '432', '53', '63', '201', '51', '69', '31', '42', '122', '131', '119', '36', '245', '60', '28', '81', '9', '114', '105', '3', '41', '86', '150', '79', '104', '120', '74', '420', '39', '427', '40', '59', '24', '126', '202', '222', '429', '43', '30', '38', '55', '10', '85', '121', '203', '240', '96', '7', '64', '89', '127', '236', '117', '99', '54', '90', '57', '11', '21', '62', '82', '25', '267', '75', '111', '76', '56', '20', '2', '61', '80', '78', '133', '33', '421', '58', '107', '92', '68', '13', '113', '35', '98', '102', '27', '14', '15', '72', '37', '16', '50', '134', '223', '163', '91', '44', '17', '412', '18', '48', '23', '4', '29', '77', '6', '110', '67', '45', '161', '254', '112', '8', '106', '19', '101', '5', '157', '83', '154', '238', '115', '26', '143']

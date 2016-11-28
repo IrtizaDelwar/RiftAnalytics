@@ -1,3 +1,8 @@
+// This class gets the list of free champions from the ajax call to the champion_rotation function in processor.py
+// Then it loops through the returned list and gets information for each champion in the list via an ajax call to 
+// champion_info in processor.py. It then adds an image, and sets its on click event listener. The on click
+// event listener changes the back ground, name, and description based on the champion chosen. If there is no background
+// current on the page then it adds the current champions background to the page.
 function rotation(){
   $.ajax({
       type: "POST",
