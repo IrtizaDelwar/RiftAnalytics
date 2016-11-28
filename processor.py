@@ -147,8 +147,8 @@ def sspell_info():
 		errorReport = get_error(spellInfoResponse)
 		return render_template("invalid.html", error=errorReport)
 	spellInfoResponse2 = requests.get(URL2)
-	if (valid_api_request(spellInfo2Response) == False):
-		errorReport = get_error(spellInfo2Response)
+	if (valid_api_request(spellInfoResponse2) == False):
+		errorReport = get_error(spellInfoResponse2)
 		return render_template("invalid.html", error=errorReport)
 	spellInfoResponse = spellInfoResponse.json()
 	spellInfoResponse2 = spellInfoResponse2.json()
@@ -223,11 +223,21 @@ def recent_game(region, username):
 	gameInfo.append(str(champResponse.get('name')))
 	picDict = champResponse.get('image')
 	gameInfo.append(picDict.get('full'))
-	gameInfo.append(str(stats.get('championsKilled')))
-	gameInfo.append(str(stats.get('numDeaths')))
-	gameInfo.append(str(stats.get('assists')))
+	assists = 0
+	kills = stats.get('championsKilled')
+	deaths = stats.get('numDeaths')
+	assists = stats.get('assists')
+	if not stats.get('assists'):
+		assists = 0
+	if not stats.get('numDeaths'):
+		deaths = 0
+	if not stats.get('championsKilled'):
+		kills = 0
+	gameInfo.append(str(kills))
+	gameInfo.append(str(deaths))
+	gameInfo.append(str(assists))
 	gameInfo.append(str(stats.get('win')))
-	KDA = "{0:.2f}".format((stats.get('championsKilled') + stats.get('assists')) / stats.get('numDeaths'))
+	KDA = "{0:.2f}".format((kills + assists) / deaths)
 	gameInfo.append(str(KDA))
 	return gameInfo
 
