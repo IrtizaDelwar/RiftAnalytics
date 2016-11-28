@@ -2,6 +2,7 @@ import requests
 from flask import Flask, render_template, request, jsonify
 from User import User
 from Champion import Champion
+from Item import Item
 
 app = Flask(__name__, static_url_path='')
 
