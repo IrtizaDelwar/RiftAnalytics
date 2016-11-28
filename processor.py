@@ -48,7 +48,7 @@ def profile(region, username):
 		userInfo.append("No Games")
 		userInfo.append("--")
 	else: #Else get the ranked stats for the username. Create the URL for the API request for the summoners ranked stats
-		URLRANK  = "https://" + region + ".api.pvp.net/api/lol/" + region + "/v2.5/league/by-summoner/" + user.nameID + "/entry?api_key=" + apiKey2
+		URLRANK  = "https://" + region + ".api.pvp.net/api/lol/" + region + "/v2.5/league/by-summoner/" + str(summonerID) + "/entry?api_key=" + apiKey2
 		rankResponse = requests.get(URLRANK)
 		if (valid_api_request(rankResponse) == False):
 			errorReport = get_error(rankResponse)
@@ -125,7 +125,7 @@ def champion_info():
 	champ_id = request.form['id']
 	if champ_id:
 		current_Champion = Champion(champ_id) #Creates the champion object
-		URL = "https://global.api.pvp.net/api/lol/static-data/na/v1.2/champion/" + current_Champion.ID + "?champData=image&api_key=" + apiKey
+		URL = "https://global.api.pvp.net/api/lol/static-data/na/v1.2/champion/" + champ_id + "?champData=image&api_key=" + apiKey
 		champInfoResponse = requests.get(URL)
 		if (valid_api_request(champInfoResponse) == False):
 			errorReport = get_error(champInfoResponse)
@@ -145,7 +145,7 @@ def item_info():
 	#Creates URL for the API request for the item needed
 	item_id = request.form['id']
 	current_item = Item(item_id) #Creates an Item object
-	URL = "https://global.api.pvp.net/api/lol/static-data/na/v1.2/item/" + current_item.ID + "?itemData=image&api_key=" + apiKey
+	URL = "https://global.api.pvp.net/api/lol/static-data/na/v1.2/item/" + item_id + "?itemData=image&api_key=" + apiKey
 	itemInfoResponse = requests.get(URL)
 	if (valid_api_request(itemInfoResponse) == False):
 		errorReport = get_error(itemInfoResponse)
@@ -246,7 +246,7 @@ def recent_game(region, username):
 	gameInfo = []
 	curr_user = User(str(username))
 	#Creates URL for the API Requests, then requests it from the api
-	URL = "https://" + region + ".api.pvp.net/api/lol/" + region + "/v1.3/game/by-summoner/" + curr_user.username + "/recent?api_key=" + apiKey
+	URL = "https://" + region + ".api.pvp.net/api/lol/" + region + "/v1.3/game/by-summoner/" + str(username) + "/recent?api_key=" + apiKey
 	searchResponse = requests.get(URL)
 	searchResponse = searchResponse.json()
 	allGames = searchResponse.get('games')
@@ -255,7 +255,7 @@ def recent_game(region, username):
 	champion = gameResponse.get('championId')
 	cur_Champion = Champion(str(champion))
 	#URL to get the information for the champion the user played in their post recent game
-	CHAMPURL = "https://global.api.pvp.net/api/lol/static-data/na/v1.2/champion/" + cur_Champion.ID + "?champData=image&api_key=" + apiKey
+	CHAMPURL = "https://global.api.pvp.net/api/lol/static-data/na/v1.2/champion/" + str(champion) + "?champData=image&api_key=" + apiKey
 	champResponse = requests.get(CHAMPURL)
 	champResponse = champResponse.json()
 	#Get the dictionary of stats from the most recent game
