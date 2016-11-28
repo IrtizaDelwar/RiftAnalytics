@@ -4,6 +4,9 @@ from flask_testing import TestCase
 import processor
 import unittest
 import json
+from User import User
+from Champion import Champion
+from Item import Item
 
 # Testing with LiveServer
 class MyTest(TestCase):
@@ -94,6 +97,38 @@ class MyTest(TestCase):
 	def test_recent_game(self):
 		recent = processor.recent_game("na", "23629510")
 		self.assertEqual(len(recent), 7)
+		
+	#Checks to make sure all the setters work in User class
+	def test_set_user(self):
+		test_user = User('My Name')
+		test_user.setNameID('1')
+		test_user.setLevel('15')
+		test_user.setSoloRank('Bronze')
+		self.assertEqual(test_user.ID, '1')
+		self.assertEqual(test_user.username, 'My Name')
+		self.assertEqual(test_user.level, '15')
+		self.assertEqual(test_user.soloRank, 'Bronze')
+		
+	#Checks to make sure all the setters work in Champion class
+	def test_set_champion(self):
+		test_champion = Champion('73')
+		test_champion.setChampName('Zed')
+		spells1 = [ ]
+		spells1.append('shuriken')
+		spells1.append('shadow dash')
+		test_champion.setAbilities(spells1)
+		self.assertEqual(test_champion.ID, '73')
+		self.assertEqual(test_champion.name, 'Zed')
+		self.assertEqual(len(test_champion.spells), 2)
+		
+	#Checks to make sure all the setters work in Item class
+	def test_set_item(self):
+		test_item = Item('101')
+		test_item.setName('Best Item')
+		test_item.setDescription('Super Strong')
+		self.assertEqual(test_item.name, 'Best Item')
+		self.assertEqual(test_item.ID, '101')
+		self.assertEqual(test_item.description, 'Super Strong')
 		
 if __name__ == '__main__':
 	unittest.main()

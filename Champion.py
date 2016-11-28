@@ -7,5 +7,5 @@ class Champion:
 		self.name = champName
 		
 	def setAbilities(self, spellList):
-		for x in xrange(len(spellList)):
+		for x in range(len(spellList)):
 			self.spells.append(x)
