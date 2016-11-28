@@ -4,6 +4,14 @@ from User import User
 from Champion import Champion
 from Item import Item
 
+#We ended up not needing to do much with our User, Champion, and Item classes besides store information.
+#Other use cases that we created in previous delieverables would have needed to use these classes and object
+#more. However, our 4 uses cases we decided on did not rely on them too much, so we just used setters and
+#retrieved information from the objects when needed. If we would have implemented a use case such as
+#Live Match Predictor or Top 5 champions to play in ranked, then we would have needed to use these class objects more.
+# We also did not even need to implement the Match and Player classes as described in previous deliverables because
+#the use cases we decided on did not need them at all.
+
 app = Flask(__name__, static_url_path='')
 
 #API Keys needed to access the data fromm the API. We have 2, because we are currently limited on how much data we can recieve.
@@ -19,8 +27,9 @@ def index():
 def profile(region, username):
 	userInfo = []
 	masteryInfo = []
-	#Take out all spaces in the username, as the api does not include usernames
+	#Creates a user object
 	user = User(username)
+	#Take out all spaces in the username, as the api does not include usernames
 	usernameSearch = username.replace(" ", "")
 	#Creates the URL for the API request to get the summoner ID of the summoner name passed in.
 	URL = "https://" + region + ".api.pvp.net/api/lol/" + region + "/v1.4/summoner/by-name/" + usernameSearch + "?api_key=" + apiKey
@@ -85,6 +94,7 @@ def profile(region, username):
 	masteryResponse = masteryResponse.json()
 	URLSCORE = "https://" + region + ".api.pvp.net/championmastery/location/" + region + "1/player/" + str(summonerID) + "/score?api_key=" + apiKey2
 	masteryScoreResponse = requests.get(URLSCORE)
+	#Makes sure the api request was successful/valid.
 	if (valid_api_request(masteryScoreResponse) == False):
 		errorReport = get_error(masteryScoreResponse)
 		return render_template("invalid.html", error=errorReport)
@@ -128,17 +138,18 @@ def champion_info():
 		current_Champion = Champion(champ_id) #Creates the champion object
 		URL = "https://global.api.pvp.net/api/lol/static-data/na/v1.2/champion/" + champ_id + "?champData=image&api_key=" + apiKey
 		champInfoResponse = requests.get(URL)
+		#Makes sure the request was successful
 		if (valid_api_request(champInfoResponse) == False):
 			errorReport = get_error(champInfoResponse)
 			return render_template("invalid.html", error=errorReport)
 		champInfoResponse = champInfoResponse.json()
-		champInfo = []
+		champInfo = [] #List that will contain information about the champion
 		champInfo.append(str(champInfoResponse.get('name')))
-		current_Champion.setChampName(str(champInfoResponse.get('name')))
+		current_Champion.setChampName(str(champInfoResponse.get('name'))) #Sets the name field for the champion
 		champInfo.append(str(champInfoResponse.get('title')))
 		picDict = champInfoResponse.get('image')
 		champInfo.append(picDict.get('full'))
-		return jsonify({'info' : champInfo})
+		return jsonify({'info' : champInfo}) #Returns dictionary that contains information about the champion.
 	return jsonify({'error' : 'API Request failed :('})
 
 @app.route('/item_info', methods=['POST'])
