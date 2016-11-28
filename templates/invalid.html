@@ -29,36 +29,7 @@
 
 </head>
 
-<nav class="navbar navbar-inverse navbar-fixed-top">
-  <div class="container-fluid">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <a class="navbar-brand" href="/">Rift Analytics</a>
-    </div>
-    <div class="collapse navbar-collapse" id="myNavbar">
-      <ul class="nav navbar-nav">
-        <li><a href="/free-champion-rotation"><span class="glyphicon glyphicon-retweet"></span> Free Champion Rotation </a></li>
-        <li><a href="/ultimate-bravery"><span class="glyphicon glyphicon-fire"></span> Ultimate Bravery </a></li>
-        <li><a href="#"><span class="glyphicon glyphicon-tasks"></span> Top Lists </a></li>
-        <li><a href="#"><span class="glyphicon glyphicon-eye-open"></span> Live Match Predictor </a></li>
-        <li><a href="#"><span class="glyphicon glyphicon-road"></span> Rankings </a></li>
-      </ul>
-      <ul class="nav navbar-nav navbar-right">
-        <button class="button" onclick="newDoc()"><span class="glyphicon glyphicon-search"></span> </button> <input name="searchTxt" type="text" maxlength="16" id="searchTxt" placeholder="Name.." class="searchField"/> 
-        <select id="region">
-        <option>NA</option>
-        <option>EUW</option>
-        <option>EUNE</option>
-        <option>KR</option>
-        </select></li>
-      </ul>
-    </div>
-  </div>
-</nav>
+{% include "header.html" %}
 
 
     <div class="invalid">

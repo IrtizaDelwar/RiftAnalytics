@@ -49,9 +49,18 @@ input
 .panel{
     margin: 15px;
 }
-
+.footer{
+    padding: 10px;
+    color: #009688;
+    font-size: 12px;
+    text-align: center;
+    bottom: 0;
+}
 .nav-tabs{
     margin-top:50px;
+}
+body{
+    background-color: #BDBDBD;
 }
 
 body, html {
@@ -125,8 +134,6 @@ body, html {
     text-align: center;
     text-shadow: 2px 2px #000000;
     font-family: 'Alegreya SC', serif;
-    position: fixed;
-    bottom: 0;
     left: 0;
     right: 0;
     max-width: 100%;

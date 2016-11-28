@@ -62,13 +62,13 @@ def profile(region, username):
 		userInfo.append(URLICON)
 		userInfo.append(str(ratio))
 		userInfo.append(str(lp))
-	URLMASTERY = "https://na.api.pvp.net/championmastery/location/NA1/player/" + str(summonerID) + "/topchampions?count=5&api_key=" + apiKey
+	URLMASTERY = "https://" + region + ".api.pvp.net/championmastery/location/" + region + "1/player/" + str(summonerID) + "/topchampions?count=5&api_key=" + apiKey
 	masteryResponse = requests.get(URLMASTERY)
 	if (valid_api_request(masteryResponse) == False):
 		errorReport = get_error(masteryResponse)
 		return render_template("invalid.html", error=errorReport)
 	masteryResponse = masteryResponse.json()
-	URLSCORE = "https://na.api.pvp.net/championmastery/location/NA1/player/" + str(summonerID) + "/score?api_key=" + apiKey2
+	URLSCORE = "https://" + region + ".api.pvp.net/championmastery/location/" + region + "1/player/" + str(summonerID) + "/score?api_key=" + apiKey2
 	masteryScoreResponse = requests.get(URLSCORE)
 	if (valid_api_request(masteryScoreResponse) == False):
 		errorReport = get_error(masteryScoreResponse)
