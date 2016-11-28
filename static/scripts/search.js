@@ -7,7 +7,7 @@ function newDoc()
    var user = document.getElementById("searchTxt").value;
    var e = document.getElementById("region");
    var region = e.options[e.selectedIndex].text;
-   if (user.length > 0){
+   if (user.length > 0){ //Make sure a username was passed in
      window.location.assign("/profile/" +  region + "/" + user)
    }
    else{

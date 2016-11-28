@@ -99,6 +99,8 @@ class MyTest(TestCase):
 	def test_recent_game(self):
 		recent = processor.recent_game("na", "23629510")
 		self.assertEqual(len(recent), 7)
+		#For this test we can't assert the actual values, because change based on
+		#the most recent game played by the user. 
 		
 	#Checks to make sure all the setters work in User class
 	def test_set_user(self):
