@@ -32,8 +32,18 @@ class MyTest(unittest.TestCase):
         self.assertIn(b'SummonerBarrier.png', response)
         self.assertIn(b'Cleanse', response)
         self.assertIn(b'SummonerBoost.png', response)
+     #The following 3 tests is for get_error. If an error occured then the response would be an html. If no error, then response would be json type
+    def test_champion_info_not(self):
+        response = self.app.post('/champion_info', data=dict(id = '10000'))
+        self.assertEqual(response.mimetype, 'text/html')
     
-
-	
+    def test_item_info_not(self):
+        response = self.app.post('/item_info', data=dict(id = '10000'))
+        self.assertEqual(response.mimetype, 'text/html')
+    
+    def test_sspell_info_not(self):
+        response = self.app.post('/sspell_info', data=dict(id = '10000', id2 = '10000'))
+        self.assertEqual(response.mimetype, 'text/html')
+		
 if __name__ == '__main__':
     unittest.main()
